@@ -12,35 +12,35 @@
 // productos es el mismo en los mapas de busqueda
 
 //le entregamos la lista de productos
-void menuExportar(List *listaProductos) {
+void menuExportar(List *listaCarritos) {
     char nombreArchivo[64];
 
     printf("Escriba el nombre del archivo a exportar: ");
     scanf("%s",&nombreArchivo);
 
     FILE *fp = fopen(nombreArchivo,"w");
-    Producto * Productos = firstList(listaProductos)
+    Carrito * carrito = firstList(listaProductos)
+    producto * aux;
     while(1){
-        fputs(cancion->nombre, fp);
-        fputs(",", fp);
-        fputs(cancion->artista, fp);
-        fputs(",\"", fp);
+        if(carrito == NULL)break;
 
-        char *genero = firstList(cancion->generos);
-        while (1)
+        aux = firstList(carrito->productos);
+
+        while(aux != NULL)
         {
-            fputs(genero, fp);
-            genero = nextList(cancion->generos);
-            if (genero == NULL) break;
-            fputs(", ", fp);
+            fputs(aux->nombre, fp);
+            fputs(",", fp);
+            fputs(aux->marca, fp);
+            fputs(",", fp);
+            fputs(aux->tipo, fp);
+            fputs(",", fp);
+            fputs(aux->stock, fp);
+            fputs(",", fp);
+            fputs(cancion->precio, fp);   
+            aux = nextList(carrito->productos);
         }
-        fputs("\",", fp);
-        fputs(cancion->anno, fp);
-        fputs(",", fp);
-        fputs(cancion->numLista, fp);   
-        cancion = nextList(listaGlobal);
 
-        if (cancion == NULL) break;
+        carrito = nextList(listaProductos);;
         fputs("\n", fp);
     }
     fclose(fp);
