@@ -12,6 +12,13 @@ typedef struct {
     unsigned int precio;
 } Producto;
 
+typedef struct
+{
+    char nombre[32];
+    List * productos;
+} carrito;
+
+
 int main()
 {
     int opcion;
