@@ -26,15 +26,15 @@ typedef struct
 
 void menuImportar(MapasGlobales *);
 void menuExportar(MapasGlobales *);
-void menuAgregar(MapasGlobales *);
+void menuAgregar(MapasGlobales *, List *);
 void menuBuscarTipo(MapasGlobales *);
 void menuBuscarMarca(MapasGlobales *);
 void menuBuscarNombre(MapasGlobales *);
-void menuMostrarProductos(MapasGlobales *);
-void menuAgregarACarrito(MapasGlobales *);
-void menuEliminarCarrito(MapasGlobales *);
-void menuComprar(MapasGlobales *);
-void menuMostrarCarritos(MapasGlobales *);
+void menuMostrarProductos(List *);
+void menuAgregarACarrito(List *);
+void menuEliminarCarrito(List *);
+void menuComprar(List *);
+void menuMostrarCarritos(List *);
 
 int main()
 {
@@ -90,7 +90,7 @@ void menuExportar(MapasGlobales *mapas)
 
 }
 
-void menuAgregar(MapasGlobales *mapas)
+void menuAgregar(MapasGlobales *mapas, List *carritos)
 {
 
 }
@@ -110,27 +110,27 @@ void menuBuscarNombre(MapasGlobales *mapas)
 
 }
 
-void menuMostrarProductos(MapasGlobales *mapas)
+void menuMostrarProductos(List *carritos)
 {
 
 }
 
-void menuAgregarACarrito(MapasGlobales *mapas)
+void menuAgregarACarrito(List *carritos)
 {
 
 }
 
-void menuEliminarCarrito(MapasGlobales *mapas)
+void menuEliminarCarrito(List *carritos)
 {
 
 }
 
-void menuComprar(MapasGlobales *mapas)
+void menuComprar(List *carritos)
 {
 
 }
 
-void menuMostrarCarritos(MapasGlobales *mapas)
+void menuMostrarCarritos(List *carritos)
 {
 
 }
