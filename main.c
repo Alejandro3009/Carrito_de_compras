@@ -25,7 +25,7 @@ typedef struct
 } carrito;
 
 void menuImportar(MapasGlobales *);
-void menuExportar(MapasGlobales *);
+void menuExportar(List *);
 void menuAgregar(MapasGlobales *, List *);
 void menuBuscarTipo(MapasGlobales *);
 void menuBuscarMarca(MapasGlobales *);
@@ -85,9 +85,40 @@ void menuImportar(MapasGlobales *mapas)
 
 }
 
-void menuExportar(MapasGlobales *mapas)
-{
+void menuExportar(List *listaCarritos) {
+    char nombreArchivo[64];
 
+    printf("Escriba el nombre del archivo a exportar: ");
+    scanf("%s",&nombreArchivo);
+
+    FILE *fp = fopen(nombreArchivo,"w");
+    carrito * carrito = firstList(listaCarritos);
+    Producto * aux;
+    while(1){
+        if(carrito == NULL)break;
+
+        aux = firstList(carrito->productos);
+
+        while(aux != NULL)
+        {
+            fputs(aux->nombre, fp);
+            fputs(",", fp);
+            fputs(aux->marca, fp);
+            fputs(",", fp);
+            fputs(aux->tipo, fp);
+            fputs(",", fp);
+            fputs(aux->stock, fp);
+            fputs(",", fp);
+            fputs(cancion->precio, fp);   
+            aux = nextList(carrito->productos);
+        }
+
+        carrito = nextList(listaCarritos);;
+        fputs("\n", fp);
+    }
+    fclose(fp);
+    esperarEnter();
+    return;
 }
 
 void menuAgregar(MapasGlobales *mapas, List *carritos)
