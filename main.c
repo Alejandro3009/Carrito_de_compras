@@ -104,35 +104,30 @@ void menuImportar(MapasGlobales *mapas)
 
 }
 
-void menuExportar(List *listaCarritos) {
+void menuExportar(MapasGlobales *mapas){
     char nombreArchivo[64];
 
     printf("Escriba el nombre del archivo a exportar: ");
     scanf("%s",&nombreArchivo);
 
     FILE *fp = fopen(nombreArchivo,"w");
-    carrito * carrito = firstList(listaCarritos);
-    Producto * aux;
+    Pair * aux = firstMap(mapas->mapaNombre)
+
     while(1){
-        if(carrito == NULL)break;
 
-        aux = firstList(carrito->productos);
+        if(aux == NULL)break;
 
-        while(aux != NULL)
-        {
-            fputs(aux->nombre, fp);
-            fputs(",", fp);
-            fputs(aux->marca, fp);
-            fputs(",", fp);
-            fputs(aux->tipo, fp);
-            fputs(",", fp);
-            fputs(aux->stock, fp);
-            fputs(",", fp);
-            fputs(cancion->precio, fp);
-            aux = nextList(carrito->productos);
-        }
+        fputs(aux->nombre, fp);
+        fputs(",", fp);
+        fputs(aux->marca, fp);
+        fputs(",", fp);
+        fputs(aux->tipo, fp);
+        fputs(",", fp);
+        fputs(aux->stock, fp);
+        fputs(",", fp);
+        fputs(cancion->precio, fp);
 
-        carrito = nextList(listaCarritos);;
+        aux = nextMap(mapas->mapaNombre);
         fputs("\n", fp);
     }
     fclose(fp);
