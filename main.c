@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 #include "hashmap.h"
 #include "list.h"
 
@@ -43,26 +44,26 @@ int main()
     mapas->mapaTipo = createMap(20);
     mapas->mapaMarca = createMap(20);
 
-    printf("    |  Menu  |\nPara elegir una opción introduzca el número correspondiente:\n");
-
-    printf("  1. Importar archivo\n");
-    printf("  2. Exportar archivo\n");
-    printf("  3. Agregar producto\n");
-    printf("  4. Buscar tipo de producto\n");
-    printf("  5. Buscar productos por marca\n");
-    printf("  6. Buscar productos por nombre\n");
-    printf("  7. Mostrar todos los productos\n");
-    printf("  8. Agregar producto al carrito\n");
-    printf("  9. Eliminar carrito\n");
-    printf("  10. Concretar compra del carrito\n");
-    printf("  11. Mostrar todos los carritos\n");
-    printf("  0. Salir\n");
-    
-    int opcion;
-    scanf("%i", &opcion);
-
-    while(1)
+    while (1)
     {
+        printf("    |  Menu  |\nPara elegir una opción introduzca el número correspondiente:\n");
+
+        printf("  1. Importar archivo\n");
+        printf("  2. Exportar archivo\n");
+        printf("  3. Agregar producto\n");
+        printf("  4. Buscar tipo de producto\n");
+        printf("  5. Buscar productos por marca\n");
+        printf("  6. Buscar productos por nombre\n");
+        printf("  7. Mostrar todos los productos\n");
+        printf("  8. Agregar producto al carrito\n");
+        printf("  9. Eliminar carrito\n");
+        printf("  10. Concretar compra del carrito\n");
+        printf("  11. Mostrar todos los carritos\n");
+        printf("  0. Salir\n");
+        
+        int opcion;
+        scanf("%i", &opcion);
+
         if(opcion == 0) break;
         if(opcion == 1) menuImportar(mapas);
         if(opcion == 2) menuExportar(mapas);
@@ -80,6 +81,24 @@ int main()
     return 0;
 }
 
+void esperarEnter()
+{
+    printf("Presione ENTER para continuar\n");
+    getchar();getchar();
+}
+
+Producto *crearProducto(char *nombre, char *tipo, char *marca, char *stock, char *precio)
+{
+    Producto *producto = (Producto*) malloc (sizeof(Producto));
+
+    strcpy(producto->nombre, nombre);
+    strcpy(producto->tipo, tipo);
+    strcpy(producto->marca, marca);
+
+    producto->stock = atoi(stock); // convierte string a int
+    producto->precio = atoi(precio);
+}
+
 void menuImportar(MapasGlobales *mapas)
 {
 
@@ -92,7 +111,57 @@ void menuExportar(MapasGlobales *mapas)
 
 void menuAgregar(MapasGlobales *mapas)
 {
+    printf("Introduzca el producto que desea agregar utilizando el siguiente formato:\n");
+    printf("\'Nombre,Tipo,Marca,Stock,Precio\'\n");
 
+    char linea[512];
+    
+    getchar(); // elimina el buffer
+    scanf("%99[^\n]", linea); // lee todo hasta encontrar un \n
+    char *nombre = strtok(linea, ",\n");
+    char *tipo = strtok(NULL, ",\n");
+    char *marca = strtok(NULL, ",\n");
+    char *stock = strtok(NULL, ",\n");
+    char *precio = strtok(NULL, ",\n");
+
+    Pair *busqueda = searchMap(mapas->mapaNombre, nombre);
+    if (busqueda) // si se encontró un producto
+    {
+        int stockInt = atoi(stock);
+
+        Producto *producto = busqueda->value;
+        producto->stock += stockInt;
+
+        printf("Este producto ya existe en la lista, se aumentó el stock\n");
+        esperarEnter();
+        return;
+    }
+
+    Producto *producto = crearProducto(nombre, tipo, marca, stock, precio);
+
+    insertMap(mapas->mapaNombre, nombre, producto);
+
+    busqueda = searchMap(mapas->mapaTipo, tipo);
+    if (!busqueda)
+    {
+        List *list = createList();
+        insertMap(mapas->mapaTipo, tipo, list);
+        pushBack(list, producto);
+    }
+    else pushBack(busqueda->value, producto);
+
+    busqueda = searchMap(mapas->mapaMarca, marca);
+    if (!busqueda)
+    {
+        List *list = createList();
+        insertMap(mapas->mapaMarca, marca, list);
+        pushBack(list, producto);
+    }
+    else pushBack(busqueda->value, producto);
+
+    printf("Producto añadido exitosamente.\n");
+    esperarEnter();
+    return;
 }
 
 void menuBuscarTipo(MapasGlobales *mapas)
