@@ -117,15 +117,15 @@ void menuExportar(MapasGlobales *mapas){
 
         if(aux == NULL)break;
 
-        fputs(aux->nombre, fp);
+        fputs(aux->value->nombre, fp);
         fputs(",", fp);
-        fputs(aux->marca, fp);
+        fputs(aux->value->marca, fp);
         fputs(",", fp);
-        fputs(aux->tipo, fp);
+        fputs(aux->value->tipo, fp);
         fputs(",", fp);
-        fputs(aux->stock, fp);
+        fputs(aux->value->stock, fp);
         fputs(",", fp);
-        fputs(cancion->precio, fp);
+        fputs(cancion->value->precio, fp);
 
         aux = nextMap(mapas->mapaNombre);
         fputs("\n", fp);
