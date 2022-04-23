@@ -1,17 +1,17 @@
 
-mapCarritos
-    carritos
-        productos
-    mapN
-        lista productos
-    mapT
-        lista productos
-    mapM
-        lista productos
+// mapCarritos
+//     carritos
+//         productos
+//     mapN
+//         lista productos
+//     mapT
+//         lista productos
+//     mapM
+//         lista productos
 
-productos es el mismo en los mapas de busqueda
+// productos es el mismo en los mapas de busqueda
 
-agregarProductoCarritos(hashmap)
+agregarProductoCarritos(hashmap);
 
 void agregarProducto(Producto tipoProducto, list * productos)
 {
