@@ -26,16 +26,16 @@ typedef struct
 } carrito;
 
 void menuImportar(MapasGlobales *);
-void menuExportar(MapasGlobales *);
-void menuAgregar(MapasGlobales *);
+void menuExportar(List *);
+void menuAgregar(MapasGlobales *, List *);
 void menuBuscarTipo(MapasGlobales *);
 void menuBuscarMarca(MapasGlobales *);
 void menuBuscarNombre(MapasGlobales *);
-void menuMostrarProductos(MapasGlobales *);
-void menuAgregarACarrito(MapasGlobales *);
-void menuEliminarCarrito(MapasGlobales *);
-void menuComprar(MapasGlobales *);
-void menuMostrarCarritos(MapasGlobales *);
+void menuMostrarProductos(List *);
+void menuAgregarACarrito(List *);
+void menuEliminarCarrito(List *);
+void menuComprar(List *);
+void menuMostrarCarritos(List *);
 
 int main()
 {
@@ -104,12 +104,43 @@ void menuImportar(MapasGlobales *mapas)
 
 }
 
-void menuExportar(MapasGlobales *mapas)
-{
+void menuExportar(List *listaCarritos) {
+    char nombreArchivo[64];
 
+    printf("Escriba el nombre del archivo a exportar: ");
+    scanf("%s",&nombreArchivo);
+
+    FILE *fp = fopen(nombreArchivo,"w");
+    carrito * carrito = firstList(listaCarritos);
+    Producto * aux;
+    while(1){
+        if(carrito == NULL)break;
+
+        aux = firstList(carrito->productos);
+
+        while(aux != NULL)
+        {
+            fputs(aux->nombre, fp);
+            fputs(",", fp);
+            fputs(aux->marca, fp);
+            fputs(",", fp);
+            fputs(aux->tipo, fp);
+            fputs(",", fp);
+            fputs(aux->stock, fp);
+            fputs(",", fp);
+            fputs(cancion->precio, fp);   
+            aux = nextList(carrito->productos);
+        }
+
+        carrito = nextList(listaCarritos);;
+        fputs("\n", fp);
+    }
+    fclose(fp);
+    esperarEnter();
+    return;
 }
 
-void menuAgregar(MapasGlobales *mapas)
+void menuAgregar(MapasGlobales *mapas, List *carritos)
 {
     printf("Introduzca el producto que desea agregar utilizando el siguiente formato:\n");
     printf("\'Nombre,Tipo,Marca,Stock,Precio\'\n");
@@ -179,27 +210,27 @@ void menuBuscarNombre(MapasGlobales *mapas)
 
 }
 
-void menuMostrarProductos(MapasGlobales *mapas)
+void menuMostrarProductos(List *carritos)
 {
 
 }
 
-void menuAgregarACarrito(MapasGlobales *mapas)
+void menuAgregarACarrito(List *carritos)
 {
 
 }
 
-void menuEliminarCarrito(MapasGlobales *mapas)
+void menuEliminarCarrito(List *carritos)
 {
 
 }
 
-void menuComprar(MapasGlobales *mapas)
+void menuComprar(List *carritos)
 {
 
 }
 
-void menuMostrarCarritos(MapasGlobales *mapas)
+void menuMostrarCarritos(List *carritos)
 {
 
 }
