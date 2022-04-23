@@ -128,7 +128,7 @@ void menuExportar(List *listaCarritos) {
             fputs(",", fp);
             fputs(aux->stock, fp);
             fputs(",", fp);
-            fputs(cancion->precio, fp);   
+            fputs(cancion->precio, fp);
             aux = nextList(carrito->productos);
         }
 
