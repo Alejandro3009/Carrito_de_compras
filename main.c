@@ -41,17 +41,17 @@ int main()
     while(1)
     {
         if(opcion == 0)break;
-        if(opcion == 1)
-        if(opcion == 2)
-        if(opcion == 3)
-        if(opcion == 4)
-        if(opcion == 5)
-        if(opcion == 6)
-        if(opcion == 7)
-        if(opcion == 8)
-        if(opcion == 9)
-        if(opcion == 10)
-        if(opcion == 11)
+        if(opcion == 1);
+        if(opcion == 2);
+        if(opcion == 3);
+        if(opcion == 4);
+        if(opcion == 5);
+        if(opcion == 6);
+        if(opcion == 7);
+        if(opcion == 8);
+        if(opcion == 9);
+        if(opcion == 10);
+        if(opcion == 11);
     }
     
     return 0;
