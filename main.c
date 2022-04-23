@@ -125,7 +125,7 @@ void menuExportar(MapasGlobales *mapas){
         fputs(",", fp);
         fputs(aux->value->stock, fp);
         fputs(",", fp);
-        fputs(cancion->value->precio, fp);
+        fputs(aux->value->precio, fp);
 
         aux = nextMap(mapas->mapaNombre);
         fputs("\n", fp);
