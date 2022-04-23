@@ -18,6 +18,12 @@ typedef struct {
     HashMap *mapaMarca;
 } MapasGlobales;
 
+typedef struct
+{
+    char nombre[32];
+    List * productos;
+} carrito;
+
 void menuImportar(MapasGlobales *);
 void menuExportar(MapasGlobales *);
 void menuAgregar(MapasGlobales *);
