@@ -23,7 +23,7 @@ int main()
     printf("11. mostrar todos los carritos");
     printf("0. salir");
 
-    while(0)
+    while(1)
     {
         if(opcion == 0)break;
         if(opcion == 1)
