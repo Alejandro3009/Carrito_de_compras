@@ -12,6 +12,18 @@ typedef struct {
     unsigned int precio;
 } Producto;
 
+void menuImportar();
+void menuExportar();
+void menuAgregar();
+void menuBuscarTipo();
+void menuBuscarMarca();
+void menuBuscarNombre();
+void menuMostrarProductos();
+void menuAgregarACarrito();
+void menuEliminarCarrito();
+void menuComprar();
+void menuMostrarCarritos();
+
 int main()
 {
     int opcion;
