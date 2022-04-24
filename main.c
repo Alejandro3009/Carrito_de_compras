@@ -26,8 +26,8 @@ typedef struct
 } carrito;
 
 void menuImportar(MapasGlobales *);
-void menuExportar(List *);
-void menuAgregar(MapasGlobales *, List *);
+void menuExportar(MapasGlobales *);
+void menuAgregar(MapasGlobales *);
 void menuBuscarTipo(MapasGlobales *);
 void menuBuscarMarca(MapasGlobales *);
 void menuBuscarNombre(MapasGlobales *);
@@ -67,7 +67,7 @@ int main()
         if(opcion == 0) break;
         if(opcion == 1) menuImportar(mapas);
         if(opcion == 2) menuExportar(mapas);
-        if(opcion == 3) menuAgregar(mapas,carritos);
+        if(opcion == 3) menuAgregar(mapas);
         if(opcion == 4) menuBuscarTipo(mapas);
         if(opcion == 5) menuBuscarMarca(mapas);
         if(opcion == 6) menuBuscarTipo(mapas);
@@ -160,22 +160,24 @@ void menuExportar(MapasGlobales *mapas) {
     scanf("%s",&nombreArchivo);
 
     FILE *fp = fopen(nombreArchivo,"w");
-    Pair *aux = firstMap(mapas);
+    Pair *aux = firstMap(mapas->mapaNombre);
+    Producto *producto = aux->value;
     
     while(1){
         if(aux == NULL)break;
         
-        fputs(aux->value->nombre, fp);
+        fputs(producto->nombre, fp);
         fputs(",", fp);
-        fputs(aux->value->marca, fp);
+        fputs(producto->marca, fp);
         fputs(",", fp);
-        fputs(aux->value->tipo, fp);
+        fputs(producto->tipo, fp);
         fputs(",", fp);
-        fputs(aux->value->stock, fp);
+        fputs(producto->stock, fp);
         fputs(",", fp);
-        fputs(aux->value->precio, fp);   
+        fputs(producto->precio, fp);   
 
-        aux = nextMap(mapas);
+        aux = nextMap(mapas->mapaNombre);
+        producto = aux->value;
 
         fputs("\n", fp);
     }
@@ -184,7 +186,7 @@ void menuExportar(MapasGlobales *mapas) {
     return;
 }
 
-void menuAgregar(MapasGlobales *mapas, List *carritos)
+void menuAgregar(MapasGlobales *mapas)
 {
     printf("Introduzca el producto que desea agregar utilizando el siguiente formato:\n");
     printf("\'Nombre,Tipo,Marca,Stock,Precio\'\n");
@@ -233,7 +235,24 @@ void menuBuscarMarca(MapasGlobales *mapas)
 
 void menuBuscarNombre(MapasGlobales *mapas)
 {
+    printf("Por favor ingrese el nombre del producto que esta buscando");
 
+    char linea[512];
+    scanf("%99[^\n]", linea);
+
+    Pair *aux = searchMap(mapas->mapaNombre,linea);
+    Producto *producto = aux->value;
+
+    if(aux != NULL){
+        printf("%s,", producto->nombre);
+        printf("%s,", producto->marca);
+        printf("%s,", producto->tipo);
+        printf("%u", producto->stock);
+        printf("%u", producto->precio);
+    }
+    else printf("El producto que usted esta buscando no existe");
+    
+    getchar();getchar();
 }
 
 void menuMostrarProductos(List *carritos)
