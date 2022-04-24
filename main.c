@@ -31,7 +31,7 @@ void menuAgregar(MapasGlobales *);
 void menuBuscarTipo(MapasGlobales *);
 void menuBuscarMarca(MapasGlobales *);
 void menuBuscarNombre(MapasGlobales *);
-void menuMostrarProductos(List *);
+void menuMostrarProductos(MapasGlobales *);
 void menuAgregarACarrito(List *);
 void menuEliminarCarrito(List *);
 void menuComprar(List *);
@@ -70,12 +70,12 @@ int main()
         if(opcion == 3) menuAgregar(mapas);
         if(opcion == 4) menuBuscarTipo(mapas);
         if(opcion == 5) menuBuscarMarca(mapas);
-        if(opcion == 6) menuBuscarTipo(mapas);
-        if(opcion == 7) menuImportar(mapas);
-        if(opcion == 8) menuImportar(mapas);
-        if(opcion == 9) menuImportar(mapas);
-        if(opcion == 10) menuImportar(mapas);
-        if(opcion == 11) menuImportar(mapas);
+        if(opcion == 6) menuBuscarNombre(mapas);
+        if(opcion == 7) menuMostrarProductos(mapas);
+        if(opcion == 8) menuAgregarACarrito(mapas);
+        if(opcion == 9) menuEliminarCarrito(mapas);
+        if(opcion == 10) menuComprar(mapas);
+        if(opcion == 11) menuMostrarCarritos(mapas);
     }
     
     return 0;
@@ -108,6 +108,14 @@ void insertarMapas(MapasGlobales *mapas, Producto *producto)
         pushBack(list, producto);
     }
     else pushBack(busqueda->value, producto);
+}
+
+void mostrarProducto(Producto *producto){
+    printf("%s,",producto->nombre);
+    printf("%s,",producto->tipo);
+    printf("%s,",producto->marca);
+    printf("%s,",producto->stock);
+    printf("%s\n",producto->precio);
 }
 
 Producto *crearProducto(char *nombre, char *tipo, char *marca, char *stock, char *precio)
@@ -150,7 +158,7 @@ void menuImportar(MapasGlobales *mapas)
     Producto *producto = crearProducto(nombre, tipo, marca, stock, precio);
     insertarMapas(mapas,producto);
     }
-    
+    fclose(fp);
 }
 
 void menuExportar(MapasGlobales *mapas) {
@@ -265,20 +273,28 @@ void menuBuscarNombre(MapasGlobales *mapas)
     Pair *aux = searchMap(mapas->mapaNombre,linea);
     Producto *producto = aux->value;
 
-    if(aux != NULL){
-        printf("%s,", producto->nombre);
+    if(aux != NULL){                                //probar si mostrarProducto funciona asi
+        /*printf("%s,", producto->nombre);
         printf("%s,", producto->marca);
         printf("%s,", producto->tipo);
         printf("%u", producto->stock);
-        printf("%u", producto->precio);
+        printf("%u", producto->precio);*/
+        mostrarProducto(aux->value);
     }
     else printf("El nombre del producto que usted esta buscando no existe");
 
     getchar();getchar();
 }
 
-void menuMostrarProductos(List *carritos)
+void menuMostrarProductos(MapasGlobales *mapas)
 {
+    MapasGlobales *mapa = mapas->mapaNombre;
+    Pair *aux = firstMap(mapa);
+    mostrarProducto(aux->value);
+    while(nextMap(mapa)!=0){
+        aux = nextMap(mapa);
+        mostrarProducto(aux->value);
+    }
 
 }
 
