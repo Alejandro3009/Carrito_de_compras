@@ -101,33 +101,63 @@ Producto *crearProducto(char *nombre, char *tipo, char *marca, char *stock, char
 
 void menuImportar(MapasGlobales *mapas)
 {
+    int i;
+    char *nombreArchivo[24]
+    printf("Ingrese el nombre del archivo CSV");
+    scanf("%s", &nombreArchivo);
 
+    FILE *fp = fopen(nombreArchivo, "r");
+    char linea[1024];
+    char *extension = strrchr(nombreArchivo, '.'); // retorna la posición del ultimo '.'
+    if (strcmp(extension, ".csv") != 0 || !fp)
+    {
+        printf("El archivo introducido no es válido.\n");
+        esperarEnter();
+        return;
+    }
+
+    while(linea){
+        fgets(linea, 1023, fp);
+        Producto *producto = crearProducto(nombre, tipo, marca, stock, precio);
+        char *key = strtok(linea,",\n");
+        insertMap(mapas->mapaNombre, nombre, producto);
+        char *key = strtok(NULL,",\n");
+        insertMap(mapas->mapaTipo, tipo, list);
+        char *key = strtok(NULL,",\n");
+        insertMap(mapas->mapaMarca, marca, list);
+    }
+    
 }
 
-void menuExportar(MapasGlobales *mapas){
+void menuExportar(List *listaCarritos) {
     char nombreArchivo[64];
 
     printf("Escriba el nombre del archivo a exportar: ");
     scanf("%s",&nombreArchivo);
 
     FILE *fp = fopen(nombreArchivo,"w");
-    Pair * aux = firstMap(mapas->mapaNombre)
-
+    carrito * carrito = firstList(listaCarritos);
+    Producto * aux;
     while(1){
+        if(carrito == NULL)break;
 
-        if(aux == NULL)break;
+        aux = firstList(carrito->productos);
 
-        fputs(aux->value->nombre, fp);
-        fputs(",", fp);
-        fputs(aux->value->marca, fp);
-        fputs(",", fp);
-        fputs(aux->value->tipo, fp);
-        fputs(",", fp);
-        fputs(aux->value->stock, fp);
-        fputs(",", fp);
-        fputs(aux->value->precio, fp);
+        while(aux != NULL)
+        {
+            fputs(aux->nombre, fp);
+            fputs(",", fp);
+            fputs(aux->marca, fp);
+            fputs(",", fp);
+            fputs(aux->tipo, fp);
+            fputs(",", fp);
+            fputs(aux->stock, fp);
+            fputs(",", fp);
+            fputs(aux->precio, fp);   
+            aux = nextList(carrito->productos);
+        }
 
-        aux = nextMap(mapas->mapaNombre);
+        carrito = nextList(listaCarritos);;
         fputs("\n", fp);
     }
     fclose(fp);
