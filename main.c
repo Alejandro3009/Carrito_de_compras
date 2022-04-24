@@ -67,7 +67,7 @@ int main()
         if(opcion == 0) break;
         if(opcion == 1) menuImportar(mapas);
         if(opcion == 2) menuExportar(mapas);
-        if(opcion == 3) menuAgregar(mapas);
+        if(opcion == 3) menuAgregar(mapas,carritos);
         if(opcion == 4) menuBuscarTipo(mapas);
         if(opcion == 5) menuBuscarMarca(mapas);
         if(opcion == 6) menuBuscarTipo(mapas);
@@ -124,8 +124,7 @@ Producto *crearProducto(char *nombre, char *tipo, char *marca, char *stock, char
 
 void menuImportar(MapasGlobales *mapas)
 {
-    int i;
-    char *nombreArchivo[24]
+    char *nombreArchivo[24];
     printf("Ingrese el nombre del archivo CSV");
     scanf("%s", &nombreArchivo);
 
@@ -140,14 +139,16 @@ void menuImportar(MapasGlobales *mapas)
     }
 
     while(linea){
-        fgets(linea, 1023, fp);
-        Producto *producto = crearProducto(nombre, tipo, marca, stock, precio);
-        char *key = strtok(linea,",\n");
-        insertMap(mapas->mapaNombre, nombre, producto);
-        char *key = strtok(NULL,",\n");
-        insertMap(mapas->mapaTipo, tipo, list);
-        char *key = strtok(NULL,",\n");
-        insertMap(mapas->mapaMarca, marca, list);
+    char elemento[512];
+    getchar(); // elimina el buffer
+    scanf("%99[^\n]", linea); // lee todo hasta encontrar un \n
+    char *nombre = strtok(linea, ",\n");
+    char *tipo = strtok(NULL, ",\n");
+    char *marca = strtok(NULL, ",\n");
+    char *stock = strtok(NULL, ",\n");
+    char *precio = strtok(NULL, ",\n");
+    Producto *producto = crearProducto(nombre, tipo, marca, stock, precio);
+    insertarMapas(mapas,producto);
     }
     
 }
