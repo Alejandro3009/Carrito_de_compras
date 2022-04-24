@@ -87,6 +87,29 @@ void esperarEnter()
     getchar();getchar();
 }
 
+void insertarMapas(MapasGlobales *mapas, Producto *producto)
+{
+    insertMap(mapas->mapaNombre, producto->nombre, producto);
+
+    Pair * busqueda = searchMap(mapas->mapaTipo, producto->tipo);
+    if (!busqueda)
+    {
+        List *list = createList();
+        insertMap(mapas->mapaTipo, producto->tipo, list);
+        pushBack(list, producto);
+    }
+    else pushBack(busqueda->value, producto);
+
+    busqueda = searchMap(mapas->mapaMarca, producto->marca);
+    if (!busqueda)
+    {
+        List *list = createList();
+        insertMap(mapas->mapaMarca, producto->marca, list);
+        pushBack(list, producto);
+    }
+    else pushBack(busqueda->value, producto);
+}
+
 Producto *crearProducto(char *nombre, char *tipo, char *marca, char *stock, char *precio)
 {
     Producto *producto = (Producto*) malloc (sizeof(Producto));
@@ -195,25 +218,7 @@ void menuAgregar(MapasGlobales *mapas, List *carritos)
 
     Producto *producto = crearProducto(nombre, tipo, marca, stock, precio);
 
-    insertMap(mapas->mapaNombre, nombre, producto);
-
-    busqueda = searchMap(mapas->mapaTipo, tipo);
-    if (!busqueda)
-    {
-        List *list = createList();
-        insertMap(mapas->mapaTipo, tipo, list);
-        pushBack(list, producto);
-    }
-    else pushBack(busqueda->value, producto);
-
-    busqueda = searchMap(mapas->mapaMarca, marca);
-    if (!busqueda)
-    {
-        List *list = createList();
-        insertMap(mapas->mapaMarca, marca, list);
-        pushBack(list, producto);
-    }
-    else pushBack(busqueda->value, producto);
+    insertarMapas(mapas, producto);
 
     printf("Producto añadido exitosamente.\n");
     esperarEnter();
