@@ -112,8 +112,8 @@ void insertarMapas(MapasGlobales *mapas, Producto *producto)
 
 void mostrarProducto(Producto *producto){
     printf("%s,",producto->nombre);
-    printf("%s,",producto->tipo);
     printf("%s,",producto->marca);
+    printf("%s,",producto->tipo);
     printf("%s,",producto->stock);
     printf("%s\n",producto->precio);
 }
@@ -151,11 +151,11 @@ void menuImportar(MapasGlobales *mapas)
     getchar(); // elimina el buffer
     scanf("%99[^\n]", linea); // lee todo hasta encontrar un \n
     char *nombre = strtok(linea, ",\n");
-    char *tipo = strtok(NULL, ",\n");
     char *marca = strtok(NULL, ",\n");
+    char *tipo = strtok(NULL, ",\n");
     char *stock = strtok(NULL, ",\n");
     char *precio = strtok(NULL, ",\n");
-    Producto *producto = crearProducto(nombre, tipo, marca, stock, precio);
+    Producto *producto = crearProducto(nombre, marca, tipo, stock, precio);
     insertarMapas(mapas,producto);
     }
     fclose(fp);
@@ -204,8 +204,8 @@ void menuAgregar(MapasGlobales *mapas)
     getchar(); // elimina el buffer
     scanf("%99[^\n]", linea); // lee todo hasta encontrar un \n
     char *nombre = strtok(linea, ",\n");
-    char *tipo = strtok(NULL, ",\n");
     char *marca = strtok(NULL, ",\n");
+    char *tipo = strtok(NULL, ",\n");
     char *stock = strtok(NULL, ",\n");
     char *precio = strtok(NULL, ",\n");
 
@@ -222,7 +222,7 @@ void menuAgregar(MapasGlobales *mapas)
         return;
     }
 
-    Producto *producto = crearProducto(nombre, tipo, marca, stock, precio);
+    Producto *producto = crearProducto(nombre, marca, tipo, stock, precio);
 
     insertarMapas(mapas, producto);
 
@@ -295,7 +295,6 @@ void menuMostrarProductos(MapasGlobales *mapas)
         aux = nextMap(mapa);
         mostrarProducto(aux->value);
     }
-
 }
 
 void menuAgregarACarrito(List *carritos)
