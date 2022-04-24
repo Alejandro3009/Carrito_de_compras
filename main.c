@@ -251,7 +251,7 @@ void menuBuscarNombre(MapasGlobales *mapas)
     Pair *aux = searchMap(mapas->mapaNombre,linea);
     Producto *producto = aux->value;
 
-    if(aux != NULL){
+    if(aux != NULL){                                //probar si mostrarProducto funciona asi
         /*printf("%s,", producto->nombre);
         printf("%s,", producto->marca);
         printf("%s,", producto->tipo);
