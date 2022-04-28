@@ -32,9 +32,9 @@ void menuBuscarTipo(MapasGlobales *);
 void menuBuscarMarca(MapasGlobales *);
 void menuBuscarNombre(MapasGlobales *);
 void menuMostrarProductos(MapasGlobales *);
-void menuAgregarACarrito(List *);
+void menuAgregarACarrito(MapasGlobales *, List *);
 void menuEliminarCarrito(List *);
-void menuComprar(List *);
+void menuComprar(MapasGlobales *, List *);
 void menuMostrarCarritos(List *);
 
 int main()
@@ -43,6 +43,8 @@ int main()
     mapas->mapaNombre = createMap(20);
     mapas->mapaTipo = createMap(20);
     mapas->mapaMarca = createMap(20);
+
+    List *carritos = createList();
 
     while (1)
     {
@@ -72,10 +74,10 @@ int main()
         if(opcion == 5) menuBuscarMarca(mapas);
         if(opcion == 6) menuBuscarNombre(mapas);
         if(opcion == 7) menuMostrarProductos(mapas);
-        if(opcion == 8) menuAgregarACarrito(mapas);
-        if(opcion == 9) menuEliminarCarrito(mapas);
-        if(opcion == 10) menuComprar(mapas);
-        if(opcion == 11) menuMostrarCarritos(mapas);
+        if(opcion == 8) menuAgregarACarrito(mapas, carritos);
+        if(opcion == 9) menuEliminarCarrito(carritos);
+        if(opcion == 10) menuComprar(mapas, carritos);
+        if(opcion == 11) menuMostrarCarritos(carritos);
     }
     
     return 0;
@@ -273,12 +275,7 @@ void menuBuscarNombre(MapasGlobales *mapas)
     Pair *aux = searchMap(mapas->mapaNombre,linea);
     Producto *producto = aux->value;
 
-    if(aux != NULL){                                //probar si mostrarProducto funciona asi
-        /*printf("%s,", producto->nombre);
-        printf("%s,", producto->marca);
-        printf("%s,", producto->tipo);
-        printf("%u", producto->stock);
-        printf("%u", producto->precio);*/
+    if(aux != NULL){
         mostrarProducto(aux->value);
     }
     else printf("El nombre del producto que usted esta buscando no existe");
@@ -288,7 +285,7 @@ void menuBuscarNombre(MapasGlobales *mapas)
 
 void menuMostrarProductos(MapasGlobales *mapas)
 {
-    MapasGlobales *mapa = mapas->mapaNombre;
+    HashMap *mapa = mapas->mapaNombre;
     Pair *aux = firstMap(mapa);
     mostrarProducto(aux->value);
     while(nextMap(mapa)!=0){
@@ -297,7 +294,7 @@ void menuMostrarProductos(MapasGlobales *mapas)
     }
 }
 
-void menuAgregarACarrito(List *carritos)
+void menuAgregarACarrito(MapasGlobales *mapas, List *carritos)
 {
 
 }
@@ -307,7 +304,7 @@ void menuEliminarCarrito(List *carritos)
 
 }
 
-void menuComprar(List *carritos)
+void menuComprar(MapasGlobales *mapas, List *carritos)
 {
 
 }
