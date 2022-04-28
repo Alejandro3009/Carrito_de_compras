@@ -149,16 +149,16 @@ void menuImportar(MapasGlobales *mapas)
     }
 
     while(linea){
-    char elemento[512];
-    getchar(); // elimina el buffer
-    scanf("%99[^\n]", linea); // lee todo hasta encontrar un \n
-    char *nombre = strtok(linea, ",\n");
-    char *marca = strtok(NULL, ",\n");
-    char *tipo = strtok(NULL, ",\n");
-    char *stock = strtok(NULL, ",\n");
-    char *precio = strtok(NULL, ",\n");
-    Producto *producto = crearProducto(nombre, marca, tipo, stock, precio);
-    insertarMapas(mapas,producto);
+        char elemento[512];
+        getchar(); // elimina el buffer
+        scanf("%99[^\n]", linea); // lee todo hasta encontrar un \n
+        char *nombre = strtok(linea, ",\n");
+        char *marca = strtok(NULL, ",\n");
+        char *tipo = strtok(NULL, ",\n");
+        char *stock = strtok(NULL, ",\n");
+        char *precio = strtok(NULL, ",\n");
+        Producto *producto = crearProducto(nombre, marca, tipo, stock, precio);
+        insertarMapas(mapas,producto);
     }
     fclose(fp);
 }
