@@ -318,7 +318,29 @@ void menuMostrarProductos(MapasGlobales *mapas) //f7
 
 void menuAgregarACarrito(MapasGlobales *mapas, List *carritos)
 {
+    //hay que entregar struct producto, no lista carritos
+    //Map *mapa = mapas->mapaNombre;
+    int flag = 0;
+    char *linea[512];
+    printf("Ingrese el nombre del producto a ingresar");
+    scanf("%s",&linea);
 
+    while(mapas->mapaNombre != NULL){
+        if(strcmp(mapas->mapaNombre,linea) == 0){
+            pushBack(carritos,mapas->mapaNombre);
+            flag = 1;
+            break;
+        }
+        else{
+            nextMap(mapas->mapaNombre);
+        }
+    }
+    if (flag == 1){
+        printf("Se ha agregado un producto al carrito con exito");
+    }
+    else{
+        printf("No se encontro el producto deseado");
+    }
 }
 
 void menuEliminarCarrito(List *carritos)
