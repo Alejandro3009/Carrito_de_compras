@@ -147,6 +147,20 @@ Producto *crearProducto(char *nombre, char *marca, char *tipo, char *stock, char
     producto->precio = atoi(precio);
 }
 
+void imprimirCarrito(List *carrito)
+{
+    int total = 0;
+    ProductoCarrito *producto;
+    producto = firstList(carrito);
+    while (producto)
+    {
+        int precio = producto->cantidad * producto->producto->precio;
+        total += precio;
+        printf("  %s  $%i\n", producto->producto->nombre, precio);
+    }
+    printf("\nTotal = $%i", total);
+}
+
 void menuImportar(MapasGlobales *mapas)
 {
     char nombreArchivo[64];
