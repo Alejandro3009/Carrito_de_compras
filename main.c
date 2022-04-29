@@ -357,6 +357,21 @@ void menuComprar(MapasGlobales *mapas)
 
     if (carrito)
     {
+        printf("Productos contenidos en el carrito:\n");
+        imprimirCarrito(carrito);
+
+        printf("Introduzca S para confirmar la compra, o N para volver al menú\n");
+        char opcion;
+        scanf("%i", &opcion);
+
+        if (opcion == 'N') return;
+        while (opcion != 'S')
+        {
+            printf("Opción inválida. Introduzca nuevamente\n");
+            scanf("%i", &opcion);
+            if (opcion == 'N') return;
+        }
+
         ProductoCarrito *productoCarrito = firstList(carrito);
         while (productoCarrito)
         {
