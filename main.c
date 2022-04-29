@@ -17,6 +17,7 @@ typedef struct {
     Map *mapaNombre;
     Map *mapaTipo;
     Map *mapaMarca;
+    Map *mapaCarritos;
 } MapasGlobales;
 
 typedef struct
@@ -33,7 +34,7 @@ void menuBuscarMarca(MapasGlobales *);
 void menuBuscarNombre(MapasGlobales *);
 void menuMostrarProductos(MapasGlobales *);
 void menuAgregarACarrito(MapasGlobales *, List *);
-void menuEliminarCarrito(List *);
+void menuEliminarCarrito(MapasGlobales *);
 void menuComprar(MapasGlobales *, List *);
 void menuMostrarCarritos(List *);
 
@@ -261,7 +262,7 @@ void menuBuscarTipo(MapasGlobales *mapas)
             producto = nextList(lista);
         }
     }
-    else printf("El tipo de producto que usted esta buscando no existe");
+    else printf("El tipo de producto que usted esta buscando no existe\n");
     esperarEnter();
 }
 
@@ -284,7 +285,7 @@ void menuBuscarMarca(MapasGlobales *mapas)
             producto = nextList(lista);
         }
     }
-    else printf("La marca del producto que usted esta buscando no existe");
+    else printf("La marca del producto que usted esta buscando no existe\n");
     esperarEnter();
 }
 
@@ -301,7 +302,7 @@ void menuBuscarNombre(MapasGlobales *mapas)
     if(producto != NULL){
         mostrarProducto(producto);
     }
-    else printf("El nombre del producto que usted esta buscando no existe");
+    else printf("El nombre del producto que usted esta buscando no existe\n");
     esperarEnter();
 }
 
@@ -321,9 +322,9 @@ void menuAgregarACarrito(MapasGlobales *mapas, List *carritos)
 
 }
 
-void menuEliminarCarrito(List *carritos)
+void menuEliminarCarrito(MapasGlobales *carritos)
 {
-
+    
 }
 
 void menuComprar(MapasGlobales *mapas, List *carritos)
