@@ -9,8 +9,8 @@ typedef struct {
     char nombre[32];
     char marca[16];
     char tipo[16];
-    unsigned int stock;
-    unsigned int precio;
+    int stock;
+    int precio;
 } Producto;
 
 typedef struct {
@@ -37,12 +37,28 @@ void menuEliminarCarrito(List *);
 void menuComprar(MapasGlobales *, List *);
 void menuMostrarCarritos(List *);
 
+int is_equal(void *key1, void *key2)
+{
+    if (strcmp(key1, key2) == 0) return 1;
+    return 0;
+}
+
+int lower_than(void *key1, void *key2)
+{
+    if (strcmp(key1, key2) < 0) return 1;
+    return 0;
+}
+
 int main()
 {
     MapasGlobales *mapas = (MapasGlobales *) malloc (sizeof(MapasGlobales));
-    mapas->mapaNombre = createMap(20);
-    mapas->mapaTipo = createMap(20);
-    mapas->mapaMarca = createMap(20);
+    mapas->mapaNombre = createMap(is_equal);
+    mapas->mapaTipo = createMap(is_equal);
+    mapas->mapaMarca = createMap(is_equal);
+
+    setSortFunction(mapas->mapaNombre, lower_than);
+    setSortFunction(mapas->mapaTipo, lower_than);
+    setSortFunction(mapas->mapaMarca, lower_than);
 
     List *carritos = createList();
 
@@ -93,7 +109,7 @@ void insertarMapas(MapasGlobales *mapas, Producto *producto)
 {
     insertMap(mapas->mapaNombre, producto->nombre, producto);
 
-    Producto *busqueda = searchMap(mapas->mapaTipo, producto->tipo);
+    List *busqueda = searchMap(mapas->mapaTipo, producto->tipo);
     if (!busqueda)
     {
         List *list = createList();
@@ -116,17 +132,17 @@ void mostrarProducto(Producto *producto){
     printf("%s,",producto->nombre);
     printf("%s,",producto->marca);
     printf("%s,",producto->tipo);
-    printf("%s,",producto->stock);
-    printf("%s\n",producto->precio);
+    printf("%i,",producto->stock);
+    printf("%i\n",producto->precio);
 }
 
-Producto *crearProducto(char *nombre, char *tipo, char *marca, char *stock, char *precio)
+Producto *crearProducto(char *nombre, char *marca, char *tipo, char *stock, char *precio)
 {
     Producto *producto = (Producto*) malloc (sizeof(Producto));
 
     strcpy(producto->nombre, nombre);
-    strcpy(producto->tipo, tipo);
     strcpy(producto->marca, marca);
+    strcpy(producto->tipo, tipo);
 
     producto->stock = atoi(stock); // convierte string a int
     producto->precio = atoi(precio);
@@ -244,6 +260,7 @@ void menuBuscarMarca(MapasGlobales *mapas)
     printf("Por favor ingrese el nombre del producto que esta buscando");
 
     char linea[512];
+    getchar();
     scanf("%99[^\n]", linea);
     List *lista = searchMap(mapas->mapaNombre,linea);
     Producto *producto = firstList(lista);
@@ -270,6 +287,7 @@ void menuBuscarNombre(MapasGlobales *mapas)
     printf("Por favor ingrese el nombre del producto que esta buscando");
 
     char linea[512];
+    getchar();
     scanf("%99[^\n]", linea);
 
     Producto *producto = searchMap(mapas->mapaNombre,linea);
@@ -282,15 +300,15 @@ void menuBuscarNombre(MapasGlobales *mapas)
     getchar();getchar();
 }
 
-void menuMostrarProductos(MapasGlobales *mapas)
+void menuMostrarProductos(MapasGlobales *mapas) //f7
 {
     Map *mapa = mapas->mapaNombre;
     Producto *aux = firstMap(mapa);
-    mostrarProducto(aux);
-    while(nextMap(mapa)!=0){
-        aux = nextMap(mapa);
+    while(aux){
         mostrarProducto(aux);
+        aux = nextMap(mapa);
     }
+    esperarEnter();
 }
 
 void menuAgregarACarrito(MapasGlobales *mapas, List *carritos)
