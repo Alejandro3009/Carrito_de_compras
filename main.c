@@ -17,13 +17,8 @@ typedef struct {
     Map *mapaNombre;
     Map *mapaTipo;
     Map *mapaMarca;
+    Map *mapaCarritos;
 } MapasGlobales;
-
-typedef struct
-{
-    char nombre[32];
-    List * productos;
-} carrito;
 
 void menuImportar(MapasGlobales *);
 void menuExportar(MapasGlobales *);
@@ -32,10 +27,10 @@ void menuBuscarTipo(MapasGlobales *);
 void menuBuscarMarca(MapasGlobales *);
 void menuBuscarNombre(MapasGlobales *);
 void menuMostrarProductos(MapasGlobales *);
-void menuAgregarACarrito(MapasGlobales *, List *);
-void menuEliminarCarrito(List *);
-void menuComprar(MapasGlobales *, List *);
-void menuMostrarCarritos(List *);
+void menuAgregarACarrito(MapasGlobales *);
+void menuEliminarCarrito(MapasGlobales *);
+void menuComprar(MapasGlobales *);
+void menuMostrarCarritos(MapasGlobales *);
 
 int is_equal(void *key1, void *key2)
 {
@@ -55,12 +50,11 @@ int main()
     mapas->mapaNombre = createMap(is_equal);
     mapas->mapaTipo = createMap(is_equal);
     mapas->mapaMarca = createMap(is_equal);
+    mapas->mapaCarritos = createMap(is_equal);
 
     setSortFunction(mapas->mapaNombre, lower_than);
     setSortFunction(mapas->mapaTipo, lower_than);
     setSortFunction(mapas->mapaMarca, lower_than);
-
-    List *carritos = createList();
 
     while (1)
     {
@@ -90,10 +84,10 @@ int main()
         if(opcion == 5) menuBuscarMarca(mapas);
         if(opcion == 6) menuBuscarNombre(mapas);
         if(opcion == 7) menuMostrarProductos(mapas);
-        if(opcion == 8) menuAgregarACarrito(mapas, carritos);
-        if(opcion == 9) menuEliminarCarrito(carritos);
-        if(opcion == 10) menuComprar(mapas, carritos);
-        if(opcion == 11) menuMostrarCarritos(carritos);
+        if(opcion == 8) menuAgregarACarrito(mapas);
+        if(opcion == 9) menuEliminarCarrito(mapas);
+        if(opcion == 10) menuComprar(mapas);
+        if(opcion == 11) menuMostrarCarritos(mapas);
     }
     
     return 0;
@@ -253,7 +247,6 @@ void menuBuscarTipo(MapasGlobales *mapas)
     Producto *producto = firstList(lista);
 
     if(producto != NULL){
-        printf("aca esta una lista del tipo productos que ha buscado\n\n");
         while(producto != NULL)
         {
             mostrarProducto(producto);
@@ -316,7 +309,7 @@ void menuMostrarProductos(MapasGlobales *mapas) //f7
     esperarEnter();
 }
 
-void menuAgregarACarrito(MapasGlobales *mapas, List *carritos)
+void menuAgregarACarrito(MapasGlobales *mapas)
 {
     //hay que entregar struct producto, no lista carritos
     //Map *mapa = mapas->mapaNombre;
@@ -343,17 +336,17 @@ void menuAgregarACarrito(MapasGlobales *mapas, List *carritos)
     }
 }
 
-void menuEliminarCarrito(List *carritos)
+void menuEliminarCarrito(MapasGlobales *mapas)
 {
 
 }
 
-void menuComprar(MapasGlobales *mapas, List *carritos)
+void menuComprar(MapasGlobales *mapas)
 {
 
 }
 
-void menuMostrarCarritos(List *carritos)
+void menuMostrarCarritos(MapasGlobales *mapas)
 {
 
 }
