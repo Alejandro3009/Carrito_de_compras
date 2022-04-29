@@ -20,6 +20,11 @@ typedef struct {
     Map *mapaCarritos;
 } MapasGlobales;
 
+typedef struct {
+    Producto *producto;
+    int cantidad;
+} ProductoCarrito;
+
 void menuImportar(MapasGlobales *);
 void menuExportar(MapasGlobales *);
 void menuAgregar(MapasGlobales *);
@@ -329,11 +334,12 @@ void menuAgregarACarrito(MapasGlobales *mapas)
         }
     }
     if (flag == 1){
-        printf("Se ha agregado un producto al carrito con exito");
+        printf("Se ha agregado un producto al carrito con exito\n");
     }
     else{
-        printf("No se encontro el producto deseado");
+        printf("No se encontro el producto deseado\n");
     }
+    esperarEnter();
 }
 
 void menuEliminarCarrito(MapasGlobales *mapas)
@@ -343,7 +349,26 @@ void menuEliminarCarrito(MapasGlobales *mapas)
 
 void menuComprar(MapasGlobales *mapas)
 {
+    char linea[32];
+    printf("Escriba el nombre de su carrito: ");
+    scanf("%99[^\n]", linea);
 
+    List *carrito = searchMap(mapas->mapaCarritos, linea);
+
+    if (carrito)
+    {
+        ProductoCarrito *productoCarrito = firstList(carrito);
+        while (productoCarrito)
+        {
+            productoCarrito->producto->stock -= productoCarrito->cantidad;
+            popFront(carrito);
+            productoCarrito = firstList(carrito);
+        }
+    }
+    else
+    {
+        printf("No se pudo encontrar el carrito especificado\n");
+    }
 }
 
 void menuMostrarCarritos(MapasGlobales *mapas)
