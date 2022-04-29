@@ -20,11 +20,10 @@ typedef struct {
     Map *mapaCarritos;
 } MapasGlobales;
 
-typedef struct
-{
-    char nombre[32];
-    List * productos;
-} carrito;
+typedef struct {
+    Producto *producto;
+    int cantidad;
+} ProductoCarrito;
 
 void menuImportar(MapasGlobales *);
 void menuExportar(MapasGlobales *);
@@ -33,10 +32,10 @@ void menuBuscarTipo(MapasGlobales *);
 void menuBuscarMarca(MapasGlobales *);
 void menuBuscarNombre(MapasGlobales *);
 void menuMostrarProductos(MapasGlobales *);
-void menuAgregarACarrito(MapasGlobales *, List *);
+void menuAgregarACarrito(MapasGlobales *);
 void menuEliminarCarrito(MapasGlobales *);
-void menuComprar(MapasGlobales *, List *);
-void menuMostrarCarritos(List *);
+void menuComprar(MapasGlobales *);
+void menuMostrarCarritos(MapasGlobales *);
 
 int is_equal(void *key1, void *key2)
 {
@@ -56,12 +55,11 @@ int main()
     mapas->mapaNombre = createMap(is_equal);
     mapas->mapaTipo = createMap(is_equal);
     mapas->mapaMarca = createMap(is_equal);
+    mapas->mapaCarritos = createMap(is_equal);
 
     setSortFunction(mapas->mapaNombre, lower_than);
     setSortFunction(mapas->mapaTipo, lower_than);
     setSortFunction(mapas->mapaMarca, lower_than);
-
-    List *carritos = createList();
 
     while (1)
     {
@@ -91,10 +89,10 @@ int main()
         if(opcion == 5) menuBuscarMarca(mapas);
         if(opcion == 6) menuBuscarNombre(mapas);
         if(opcion == 7) menuMostrarProductos(mapas);
-        if(opcion == 8) menuAgregarACarrito(mapas, carritos);
-        if(opcion == 9) menuEliminarCarrito(carritos);
-        if(opcion == 10) menuComprar(mapas, carritos);
-        if(opcion == 11) menuMostrarCarritos(carritos);
+        if(opcion == 8) menuAgregarACarrito(mapas);
+        if(opcion == 9) menuEliminarCarrito(mapas);
+        if(opcion == 10) menuComprar(mapas);
+        if(opcion == 11) menuMostrarCarritos(mapas);
     }
     
     return 0;
@@ -254,7 +252,6 @@ void menuBuscarTipo(MapasGlobales *mapas)
     Producto *producto = firstList(lista);
 
     if(producto != NULL){
-        printf("aca esta una lista del tipo productos que ha buscado\n\n");
         while(producto != NULL)
         {
             mostrarProducto(producto);
@@ -316,7 +313,7 @@ void menuMostrarProductos(MapasGlobales *mapas) //f7
     esperarEnter();
 }
 
-void menuAgregarACarrito(MapasGlobales *mapas, List *carritos)
+void menuAgregarACarrito(MapasGlobales *mapas)
 {
     //hay que entregar struct producto, no lista carritos
     //Map *mapa = mapas->mapaNombre;
@@ -336,11 +333,12 @@ void menuAgregarACarrito(MapasGlobales *mapas, List *carritos)
         }
     }
     if (flag == 1){
-        printf("Se ha agregado un producto al carrito con exito");
+        printf("Se ha agregado un producto al carrito con exito\n");
     }
     else{
-        printf("No se encontro el producto deseado");
+        printf("No se encontro el producto deseado\n");
     }
+    esperarEnter();
 }
 
 void menuEliminarCarrito(MapasGlobales *mapas)
@@ -360,15 +358,34 @@ void menuEliminarCarrito(MapasGlobales *mapas)
 
     ProductoCarrito * elemento = popBack(lista);
     printf("");
-    printf("El producto eliminado del carrito es: %s, %s",elemento->productos->nombre, elemento->productos->marca);
+    printf("El producto eliminado del carrito es: %s, %s",elemento->producto->nombre, elemento->producto->marca);
 }
 
-void menuComprar(MapasGlobales *mapas, List *carritos)
+void menuComprar(MapasGlobales *mapas)
 {
+    char linea[32];
+    printf("Escriba el nombre de su carrito: ");
+    scanf("%99[^\n]", linea);
 
+    List *carrito = searchMap(mapas->mapaCarritos, linea);
+
+    if (carrito)
+    {
+        ProductoCarrito *productoCarrito = firstList(carrito);
+        while (productoCarrito)
+        {
+            productoCarrito->producto->stock -= productoCarrito->cantidad;
+            popFront(carrito);
+            productoCarrito = firstList(carrito);
+        }
+    }
+    else
+    {
+        printf("No se pudo encontrar el carrito especificado\n");
+    }
 }
 
-void menuMostrarCarritos(List *carritos)
+void menuMostrarCarritos(MapasGlobales *mapas)
 {
 
 }
