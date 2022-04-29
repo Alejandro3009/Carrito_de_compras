@@ -6,9 +6,9 @@
 #include "list.h"
 
 typedef struct {
-    char nombre[32];
-    char marca[16];
-    char tipo[16];
+    char nombre[128];
+    char marca[64];
+    char tipo[64];
     int stock;
     int precio;
 } Producto;
@@ -249,34 +249,29 @@ void menuBuscarTipo(MapasGlobales *mapas)
 
 void menuBuscarMarca(MapasGlobales *mapas)
 {
-    printf("Por favor ingrese el nombre del producto que esta buscando");
+    printf("Introduzca la marca que desea buscar: ");
 
     char linea[512];
     getchar();
     scanf("%99[^\n]", linea);
-    List *lista = searchMap(mapas->mapaNombre,linea);
+    List *lista = searchMap(mapas->mapaMarca,linea);
     Producto *producto = firstList(lista);
 
     if(producto != NULL){
-        printf("aca esta una lista de productos de la marca que ha buscado\n\n");
         while(producto != NULL)
         {
-            printf("%s,", producto->nombre);
-            printf("%s,", producto->marca);
-            printf("%s,", producto->tipo);
-            printf("%u,", producto->stock);
-            printf("%u\n", producto->precio);
+            mostrarProducto(producto);
             
             producto = nextList(lista);
         }
     }
     else printf("La marca del producto que usted esta buscando no existe");
-    getchar();getchar();
+    esperarEnter();
 }
 
 void menuBuscarNombre(MapasGlobales *mapas)
 {
-    printf("Por favor ingrese el nombre del producto que esta buscando");
+    printf("Introduzca el nombre del producto: ");
 
     char linea[512];
     getchar();
@@ -287,9 +282,9 @@ void menuBuscarNombre(MapasGlobales *mapas)
     if(producto != NULL){
         mostrarProducto(producto);
     }
-    else printf("El nombre del producto que usted esta buscando no existe");
+    else printf("El producto que usted busca no existe.\n");
 
-    getchar();getchar();
+    esperarEnter();
 }
 
 void menuMostrarProductos(MapasGlobales *mapas) //f7
