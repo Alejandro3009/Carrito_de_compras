@@ -259,7 +259,7 @@ void menuBuscarTipo(MapasGlobales *mapas)
             producto = nextList(lista);
         }
     }
-    else printf("El tipo de producto que usted esta buscando no existe");
+    else printf("El tipo de producto que usted esta buscando no existe\n");
     esperarEnter();
 }
 
@@ -281,7 +281,7 @@ void menuBuscarMarca(MapasGlobales *mapas)
             producto = nextList(lista);
         }
     }
-    else printf("La marca del producto que usted esta buscando no existe");
+    else printf("La marca del producto que usted esta buscando no existe\n");
     esperarEnter();
 }
 
@@ -298,8 +298,7 @@ void menuBuscarNombre(MapasGlobales *mapas)
     if(producto != NULL){
         mostrarProducto(producto);
     }
-    else printf("El producto que usted busca no existe.\n");
-
+    else printf("El nombre del producto que usted esta buscando no existe\n");
     esperarEnter();
 }
 
@@ -344,7 +343,22 @@ void menuAgregarACarrito(MapasGlobales *mapas)
 
 void menuEliminarCarrito(MapasGlobales *mapas)
 {
+    char key[32];
 
+    printf("ingrese el nombre del carrito del cual quiere eliminar un producto\n\n");
+    scanf("%s",&key);
+
+    List * lista = searchMap(mapas->mapaCarritos,key);
+
+    if(lista == NULL){
+        printf("El carrito ingresado no existe \n");
+        esperarEnter();
+        return;
+    }
+
+    ProductoCarrito * elemento = popBack(lista);
+    printf("");
+    printf("El producto eliminado del carrito es: %s, %s",elemento->producto->nombre, elemento->producto->marca);
 }
 
 void menuComprar(MapasGlobales *mapas)
