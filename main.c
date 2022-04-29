@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-#include "hashmap.h"
+#include "Map.h"
 #include "list.h"
 
 typedef struct {
@@ -14,9 +14,9 @@ typedef struct {
 } Producto;
 
 typedef struct {
-    HashMap *mapaNombre;
-    HashMap *mapaTipo;
-    HashMap *mapaMarca;
+    Map *mapaNombre;
+    Map *mapaTipo;
+    Map *mapaMarca;
 } MapasGlobales;
 
 typedef struct
@@ -93,14 +93,14 @@ void insertarMapas(MapasGlobales *mapas, Producto *producto)
 {
     insertMap(mapas->mapaNombre, producto->nombre, producto);
 
-    Pair * busqueda = searchMap(mapas->mapaTipo, producto->tipo);
+    Producto *busqueda = searchMap(mapas->mapaTipo, producto->tipo);
     if (!busqueda)
     {
         List *list = createList();
         insertMap(mapas->mapaTipo, producto->tipo, list);
         pushBack(list, producto);
     }
-    else pushBack(busqueda->value, producto);
+    else pushBack(busqueda, producto);
 
     busqueda = searchMap(mapas->mapaMarca, producto->marca);
     if (!busqueda)
@@ -109,7 +109,7 @@ void insertarMapas(MapasGlobales *mapas, Producto *producto)
         insertMap(mapas->mapaMarca, producto->marca, list);
         pushBack(list, producto);
     }
-    else pushBack(busqueda->value, producto);
+    else pushBack(busqueda, producto);
 }
 
 void mostrarProducto(Producto *producto){
@@ -172,8 +172,8 @@ void menuExportar(MapasGlobales *mapas) {
     scanf("%s",&nombreArchivo);
 
     FILE *fp = fopen(nombreArchivo,"w");
-    Pair *aux = firstMap(mapas->mapaNombre);
-    Producto *producto = aux->value;
+    Producto *aux = firstMap(mapas->mapaNombre);
+    Producto *producto = aux;
     
     while(1){
         if(aux == NULL)break;
@@ -189,7 +189,7 @@ void menuExportar(MapasGlobales *mapas) {
         fputs(producto->precio, fp);   
 
         aux = nextMap(mapas->mapaNombre);
-        producto = aux->value;
+        producto = aux;
 
         fputs("\n", fp);
     }
@@ -213,13 +213,12 @@ void menuAgregar(MapasGlobales *mapas)
     char *stock = strtok(NULL, ",\n");
     char *precio = strtok(NULL, ",\n");
 
-    Pair *busqueda = searchMap(mapas->mapaNombre, nombre);
+    Producto *busqueda = searchMap(mapas->mapaNombre, nombre);
     if (busqueda) // si se encontró un producto
     {
         int stockInt = atoi(stock);
 
-        Producto *producto = busqueda->value;
-        producto->stock += stockInt;
+        busqueda->stock += stockInt;
 
         printf("Este producto ya existe en la lista, se aumentó el stock\n");
         esperarEnter();
@@ -246,8 +245,7 @@ void menuBuscarMarca(MapasGlobales *mapas)
 
     char linea[512];
     scanf("%99[^\n]", linea);
-    Pair *aux = searchMap(mapas->mapaNombre,linea);
-    List *lista = aux->value;
+    List *lista = searchMap(mapas->mapaNombre,linea);
     Producto *producto = firstList(lista);
 
     if(producto != NULL){
@@ -274,11 +272,10 @@ void menuBuscarNombre(MapasGlobales *mapas)
     char linea[512];
     scanf("%99[^\n]", linea);
 
-    Pair *aux = searchMap(mapas->mapaNombre,linea);
-    Producto *producto = aux->value;
+    Producto *producto = searchMap(mapas->mapaNombre,linea);
 
-    if(aux != NULL){
-        mostrarProducto(aux->value);
+    if(producto != NULL){
+        mostrarProducto(producto);
     }
     else printf("El nombre del producto que usted esta buscando no existe");
 
@@ -287,12 +284,12 @@ void menuBuscarNombre(MapasGlobales *mapas)
 
 void menuMostrarProductos(MapasGlobales *mapas)
 {
-    HashMap *mapa = mapas->mapaNombre;
-    Pair *aux = firstMap(mapa);
-    mostrarProducto(aux->value);
+    Map *mapa = mapas->mapaNombre;
+    Producto *aux = firstMap(mapa);
+    mostrarProducto(aux);
     while(nextMap(mapa)!=0){
         aux = nextMap(mapa);
-        mostrarProducto(aux->value);
+        mostrarProducto(aux);
     }
 }
 

@@ -8,7 +8,7 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
-                "hashmap.c",
+                "Map.c",
                 "list.c",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
