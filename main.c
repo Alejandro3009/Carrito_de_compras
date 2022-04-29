@@ -315,29 +315,37 @@ void menuMostrarProductos(MapasGlobales *mapas) //f7
 
 void menuAgregarACarrito(MapasGlobales *mapas)
 {
-    //hay que entregar struct producto, no lista carritos
-    //Map *mapa = mapas->mapaNombre;
+    ProductoCarrito * productoCarrito = (ProductoCarrito*) malloc (sizeof(ProductoCarrito));
+    Map *carritos = mapas->mapaCarritos;
     int flag = 0;
     char *linea[512];
-    printf("Ingrese el nombre del producto a ingresar");
+    char *nombreCarrito;
+    int cant = 0;
+
+    printf("Ingrese el nombre del carrito donde se agregara el producto\n");
+    scanf("%s",&nombreCarrito);
+
+    printf("Ingrese el nombre del producto disponible a ingresar al carrito\n");
     scanf("%s",&linea);
 
-    while(mapas->mapaNombre != NULL){
-        if(strcmp(mapas->mapaNombre,linea) == 0){
-            pushBack(carritos,mapas->mapaNombre);
-            flag = 1;
-            break;
-        }
-        else{
-            nextMap(mapas->mapaNombre);
-        }
+    printf("Ingrese la cantidad del producto que se quiere agregar al carrito\n");
+    scanf("%d",&cant);
+
+    List *busqueda = searchMap(carritos,nombreCarrito);
+
+    productoCarrito->producto = searchMap(mapas->mapaNombre,linea);
+    productoCarrito->cantidad = cant;
+    pushBack(busqueda,productoCarrito);
+
+    if(!busqueda){
+        List *productos = createList();
+        pushBack(productos,productoCarrito);
+        insertMap(carritos,nombreCarrito,productos);
     }
-    if (flag == 1){
-        printf("Se ha agregado un producto al carrito con exito\n");
+    if(busqueda){
+        pushBack(busqueda,productoCarrito);
     }
-    else{
-        printf("No se encontro el producto deseado\n");
-    }
+
     esperarEnter();
 }
 
