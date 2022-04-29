@@ -268,7 +268,7 @@ void menuBuscarTipo(MapasGlobales *mapas)
 
 void menuBuscarMarca(MapasGlobales *mapas)
 {
-    printf("Por favor ingrese el nombre de la marca del producto que esta buscando");
+    printf("Introduzca la marca que desea buscar: ");
 
     char linea[512];
     getchar();
@@ -277,7 +277,6 @@ void menuBuscarMarca(MapasGlobales *mapas)
     Producto *producto = firstList(lista);
 
     if(producto != NULL){
-        printf("aca esta una lista de productos de la marca que ha buscado\n\n");
         while(producto != NULL)
         {
             mostrarProducto(producto);
@@ -291,7 +290,7 @@ void menuBuscarMarca(MapasGlobales *mapas)
 
 void menuBuscarNombre(MapasGlobales *mapas)
 {
-    printf("Por favor ingrese el nombre del producto que esta buscando");
+    printf("Introduzca el nombre del producto: ");
 
     char linea[512];
     getchar();
@@ -319,12 +318,49 @@ void menuMostrarProductos(MapasGlobales *mapas) //f7
 
 void menuAgregarACarrito(MapasGlobales *mapas, List *carritos)
 {
+    //hay que entregar struct producto, no lista carritos
+    //Map *mapa = mapas->mapaNombre;
+    int flag = 0;
+    char *linea[512];
+    printf("Ingrese el nombre del producto a ingresar");
+    scanf("%s",&linea);
 
+    while(mapas->mapaNombre != NULL){
+        if(strcmp(mapas->mapaNombre,linea) == 0){
+            pushBack(carritos,mapas->mapaNombre);
+            flag = 1;
+            break;
+        }
+        else{
+            nextMap(mapas->mapaNombre);
+        }
+    }
+    if (flag == 1){
+        printf("Se ha agregado un producto al carrito con exito");
+    }
+    else{
+        printf("No se encontro el producto deseado");
+    }
 }
 
-void menuEliminarCarrito(MapasGlobales *carritos)
+void menuEliminarCarrito(MapasGlobales *mapas)
 {
-    
+    char key[32];
+
+    printf("ingrese el nombre del carrito del cual quiere eliminar un producto\n\n");
+    scanf("%s",&key);
+
+    List * lista = searchMap(mapas->mapaCarritos,key);
+
+    if(lista == NULL){
+        printf("El carrito ingresado no existe \n");
+        esperarEnter();
+        return;
+    }
+
+    ProductoCarrito * elemento = popBack(lista);
+    printf("");
+    printf("El producto eliminado del carrito es: %s, %s",elemento->productos->nombre, elemento->productos->marca);
 }
 
 void menuComprar(MapasGlobales *mapas, List *carritos)
