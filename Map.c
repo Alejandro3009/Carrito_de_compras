@@ -140,6 +140,10 @@ void insertMap(Map * list, void * key, void * value){
 
 }
 
+void * currentKey(Map * list) {
+    return list->current->key;
+}
+
 void * _popFront(Map * list) {
     assert(list != NULL); // list no puede ser NULL.
 
@@ -229,5 +233,3 @@ void * eraseMap(Map * list, void * key) {
 
     return data;
 }
-
-

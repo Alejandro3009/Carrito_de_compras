@@ -15,6 +15,8 @@ void * firstMap(Map * map);
 
 void * nextMap(Map * map);
 
+void * currentKey(Map * map);
+
 void setSortFunction(Map* map, int (*lower_than)(void* key1, void* key2));
 
 #endif /* MAP_h */
