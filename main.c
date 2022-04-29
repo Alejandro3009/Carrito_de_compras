@@ -134,12 +134,11 @@ Producto *crearProducto(char *nombre, char *tipo, char *marca, char *stock, char
 
 void menuImportar(MapasGlobales *mapas)
 {
-    char *nombreArchivo[24];
-    printf("Ingrese el nombre del archivo CSV");
+    char nombreArchivo[64];
+    printf("Ingrese el nombre del archivo CSV: ");
     scanf("%s", &nombreArchivo);
 
     FILE *fp = fopen(nombreArchivo, "r");
-    char linea[1024];
     char *extension = strrchr(nombreArchivo, '.'); // retorna la posición del ultimo '.'
     if (strcmp(extension, ".csv") != 0 || !fp)
     {
@@ -148,19 +147,22 @@ void menuImportar(MapasGlobales *mapas)
         return;
     }
 
-    while(linea){
-    char elemento[512];
-    getchar(); // elimina el buffer
-    scanf("%99[^\n]", linea); // lee todo hasta encontrar un \n
-    char *nombre = strtok(linea, ",\n");
-    char *marca = strtok(NULL, ",\n");
-    char *tipo = strtok(NULL, ",\n");
-    char *stock = strtok(NULL, ",\n");
-    char *precio = strtok(NULL, ",\n");
-    Producto *producto = crearProducto(nombre, marca, tipo, stock, precio);
-    insertarMapas(mapas,producto);
+    char linea[1024];
+    while(1){
+        fgets(linea, 1023, fp);
+        if (feof(fp)) break;
+        char *nombre = strtok(linea, ",\n");
+        char *marca = strtok(NULL, ",\n");
+        char *tipo = strtok(NULL, ",\n");
+        char *stock = strtok(NULL, ",\n");
+        char *precio = strtok(NULL, ",\n");
+        Producto *producto = crearProducto(nombre, marca, tipo, stock, precio);
+        insertarMapas(mapas,producto);
     }
+    printf("Archivo importado.\n");
     fclose(fp);
+    esperarEnter();
+    return;
 }
 
 void menuExportar(MapasGlobales *mapas) {
