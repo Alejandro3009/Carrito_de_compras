@@ -194,16 +194,8 @@ void menuExportar(MapasGlobales *mapas) {
     while(1){
         if(aux == NULL)break;
         
-        fputs(producto->nombre, fp);
-        fputs(",", fp);
-        fputs(producto->marca, fp);
-        fputs(",", fp);
-        fputs(producto->tipo, fp);
-        fputs(",", fp);
-        fputs(producto->stock, fp);
-        fputs(",", fp);
-        fputs(producto->precio, fp);   
-
+        fprintf(fp, "%s,%s,%s,%i,%i", producto->nombre, producto->marca, producto->tipo, producto->stock,
+                                        producto->precio);
         aux = nextMap(mapas->mapaNombre);
         producto = aux;
 
