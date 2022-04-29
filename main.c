@@ -244,7 +244,25 @@ void menuAgregar(MapasGlobales *mapas)
 
 void menuBuscarTipo(MapasGlobales *mapas)
 {
+    printf("Por favor ingrese el tipo de producto que esta buscando");
 
+    char linea[512];
+    getchar();
+    scanf("%99[^\n]", linea);
+    List *lista = searchMap(mapas->mapaTipo,linea);
+    Producto *producto = firstList(lista);
+
+    if(producto != NULL){
+        printf("aca esta una lista del tipo productos que ha buscado\n\n");
+        while(producto != NULL)
+        {
+            mostrarProducto(producto);
+            
+            producto = nextList(lista);
+        }
+    }
+    else printf("El tipo de producto que usted esta buscando no existe");
+    esperarEnter();
 }
 
 void menuBuscarMarca(MapasGlobales *mapas)
@@ -300,7 +318,29 @@ void menuMostrarProductos(MapasGlobales *mapas) //f7
 
 void menuAgregarACarrito(MapasGlobales *mapas, List *carritos)
 {
+    //hay que entregar struct producto, no lista carritos
+    //Map *mapa = mapas->mapaNombre;
+    int flag = 0;
+    char *linea[512];
+    printf("Ingrese el nombre del producto a ingresar");
+    scanf("%s",&linea);
 
+    while(mapas->mapaNombre != NULL){
+        if(strcmp(mapas->mapaNombre,linea) == 0){
+            pushBack(carritos,mapas->mapaNombre);
+            flag = 1;
+            break;
+        }
+        else{
+            nextMap(mapas->mapaNombre);
+        }
+    }
+    if (flag == 1){
+        printf("Se ha agregado un producto al carrito con exito");
+    }
+    else{
+        printf("No se encontro el producto deseado");
+    }
 }
 
 void menuEliminarCarrito(List *carritos)
