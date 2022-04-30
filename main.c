@@ -37,6 +37,7 @@ void menuEliminarCarrito(MapasGlobales *);
 void menuComprar(MapasGlobales *);
 void menuMostrarCarritos(MapasGlobales *);
 
+// compara 2 keys tipo string
 int is_equal(void *key1, void *key2)
 {
     if (strcmp(key1, key2) == 0) return 1;
@@ -98,13 +99,15 @@ int main()
     return 0;
 }
 
-void esperarEnter()
+// espera hasta que el usuario presione ENTER
+void esperarEnter() 
 {
     printf("Presione ENTER para continuar\n");
     getchar();getchar();
 }
 
-void insertarMapas(MapasGlobales *mapas, Producto *producto)
+// inserta un producto en los 3 mapas de búsqueda
+void insertarMapas(MapasGlobales *mapas, Producto *producto) 
 {
     insertMap(mapas->mapaNombre, producto->nombre, producto);
 
@@ -127,6 +130,7 @@ void insertarMapas(MapasGlobales *mapas, Producto *producto)
     else pushBack(busqueda, producto);
 }
 
+// imprime toda la información de un producto
 void mostrarProducto(Producto *producto){
     printf("%s,",producto->nombre);
     printf("%s,",producto->marca);
@@ -135,6 +139,7 @@ void mostrarProducto(Producto *producto){
     printf("%i\n",producto->precio);
 }
 
+// crea un producto con los datos recibidos y lo retorna
 Producto *crearProducto(char *nombre, char *marca, char *tipo, char *stock, char *precio)
 {
     Producto *producto = (Producto*) malloc (sizeof(Producto));
@@ -147,6 +152,7 @@ Producto *crearProducto(char *nombre, char *marca, char *tipo, char *stock, char
     producto->precio = atoi(precio);
 }
 
+// imprime la información de un carrito
 void imprimirCarrito(List *carrito)
 {
     int total = 0;
@@ -242,7 +248,7 @@ void menuAgregar(MapasGlobales *mapas)
 
         busqueda->stock += stockInt;
 
-        printf("Este producto ya existe en la lista, se aumentó el stock\n");
+        printf("Se aumentó el stock de este producto\n");
         esperarEnter();
         return;
     }
@@ -292,7 +298,6 @@ void menuBuscarMarca(MapasGlobales *mapas)
         while(producto != NULL)
         {
             mostrarProducto(producto);
-            
             producto = nextList(lista);
         }
     }
@@ -332,35 +337,41 @@ void menuAgregarACarrito(MapasGlobales *mapas)
 {
     ProductoCarrito * productoCarrito = (ProductoCarrito*) malloc (sizeof(ProductoCarrito));
     Map *carritos = mapas->mapaCarritos;
-    int flag = 0;
-    char *linea[512];
-    char nombreCarrito[32];
+    char linea[64];
+    char *nombreCarrito = (char *) malloc (sizeof(char) * 32);
     int cant = 0;
 
     getchar();
     printf("Introduzca el nombre de su carrito: ");
-    scanf("%99[^\n]",&nombreCarrito);
+    scanf("%99[^\n]", nombreCarrito);
 
     getchar();
     printf("Introduzca el nombre del producto que desea agregar: ");
-    scanf("%99[^\n]",&linea);
+    scanf("%99[^\n]", &linea);
+
+    productoCarrito->producto = searchMap(mapas->mapaNombre, linea);
+    if (!productoCarrito->producto)
+    {
+        printf("El producto no existe\n");
+        esperarEnter();
+        return;
+    }
 
     getchar();
     printf("Introduzca la cantidad del producto que desea agregar: ");
-    scanf("%i",&cant);
+    scanf("%i", &cant);
 
-    List *busqueda = searchMap(carritos,nombreCarrito);
-
-    productoCarrito->producto = searchMap(mapas->mapaNombre,linea);
+    List *busqueda = searchMap(carritos, nombreCarrito);
+    
     productoCarrito->cantidad = cant;
 
     if(!busqueda){
         List *productos = createList();
-        pushBack(productos,productoCarrito);
-        insertMap(carritos,nombreCarrito,productos);
+        pushBack(productos, productoCarrito);
+        insertMap(carritos, nombreCarrito, productos);
     }
     if(busqueda){
-        pushBack(busqueda,productoCarrito);
+        pushBack(busqueda, productoCarrito);
     }
 
     printf("Producto agregado exitosamente\n");
@@ -411,7 +422,12 @@ void menuComprar(MapasGlobales *mapas)
         ProductoCarrito *productoCarrito = firstList(carrito);
         while (productoCarrito)
         {
-            productoCarrito->producto->stock -= productoCarrito->cantidad;
+            if ((productoCarrito->producto->stock - productoCarrito->cantidad) < 0)
+            {
+                printf("No hay suficiente stock para %i %s, se saltará este producto\n", productoCarrito->producto->stock, 
+                                                                productoCarrito->producto->nombre);
+            }
+            else productoCarrito->producto->stock -= productoCarrito->cantidad;
             popFront(carrito);
             productoCarrito = firstList(carrito);
         }
@@ -422,37 +438,36 @@ void menuComprar(MapasGlobales *mapas)
         return;
     }
     printf("Compra realizada exitosamente\n");
+    esperarEnter();
 }
 
 void menuMostrarCarritos(MapasGlobales *mapas)
 {
-    Map * aux = mapas->mapaCarritos;
-    List *carrito = firstMap(aux);
+    Map * mapaCarritos = mapas->mapaCarritos;
+    List *listaCarrito = firstMap(mapaCarritos);
 
-    if(carrito == NULL){
+    if(listaCarrito == NULL){
         printf("No existen carritos \n");
         esperarEnter();
         return;
     }
-
-    ProductoCarrito * producto = firstList(carrito);
-    int contador = 0;
     
-    while(carrito != NULL)
+    while(listaCarrito != NULL)
     {
-        printf("Nombre del carrito: %s", currentKey(aux));
+        int contador = 0;
+        ProductoCarrito * producto = firstList(listaCarrito);
+        printf("Nombre del carrito: %s\n", currentKey(mapaCarritos));
 
         while(1)
         {
             if(producto == NULL){
-                printf("Cantidad de productos en el carrito: %i", contador);
-                carrito = nextMap(aux);
-                contador = 0;
+                printf("Cantidad de productos en el carrito: %i\n\n", contador);
+                listaCarrito = nextMap(mapaCarritos);
                 break;
             }
             else{
                 contador += producto->cantidad;
-                producto = nextList(carrito);
+                producto = nextList(listaCarrito);
             }
         }
     }
