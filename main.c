@@ -337,13 +337,13 @@ void menuAgregarACarrito(MapasGlobales *mapas)
     int cant = 0;
 
     printf("Ingrese el nombre del carrito donde se agregara el producto\n");
-    scanf("%s",&nombreCarrito);
+    scanf("%99[^\n]",&nombreCarrito);
 
     printf("Ingrese el nombre del producto disponible a ingresar al carrito\n");
-    scanf("%s",&linea);
+    scanf("%99[^\n]",&linea);
 
     printf("Ingrese la cantidad del producto que se quiere agregar al carrito\n");
-    scanf("%d",&cant);
+    scanf("%99[^\n]",&cant);
 
     List *busqueda = searchMap(carritos,nombreCarrito);
 
@@ -368,7 +368,7 @@ void menuEliminarCarrito(MapasGlobales *mapas)
     char key[32];
 
     printf("ingrese el nombre del carrito del cual quiere eliminar un producto\n\n");
-    scanf("%s",&key);
+    scanf("%99[^\n]",&key);
 
     List * lista = searchMap(mapas->mapaCarritos,key);
 
