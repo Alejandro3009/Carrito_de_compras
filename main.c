@@ -428,7 +428,7 @@ void menuMostrarCarritos(MapasGlobales *mapas)
     List *carrito = firstMap(aux);
 
     if(carrito == NULL){
-        printf("El carrito ingresado no existe \n");
+        printf("No existen carritos \n");
         esperarEnter();
         return;
     }
@@ -436,14 +436,14 @@ void menuMostrarCarritos(MapasGlobales *mapas)
     ProductoCarrito * producto = firstList(carrito);
     int contador = 0;
     
-    while(aux != NULL)
+    while(carrito != NULL)
     {
         void * key = currentKey(aux);
         printf("nombre del carrito: %s",key);
 
         while(1)
         {
-            if(carrito == NULL){
+            if(producto == NULL){
                 printf("cantidad de productos en el carrito: %i", contador);
                 carrito = nextMap(aux);
                 break;
@@ -454,4 +454,5 @@ void menuMostrarCarritos(MapasGlobales *mapas)
             }
         }
     }
+    esperarEnter();
 }
