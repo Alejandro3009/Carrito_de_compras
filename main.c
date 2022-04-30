@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "list.h"
 
+// struct que contiene la información de un producto
 typedef struct {
     char nombre[128];
     char marca[64];
@@ -13,6 +14,7 @@ typedef struct {
     int precio;
 } Producto;
 
+// struct que contiene 3 mapas de búsqueda de productos y un mapa con los carritos
 typedef struct {
     Map *mapaNombre;
     Map *mapaTipo;
@@ -20,6 +22,7 @@ typedef struct {
     Map *mapaCarritos;
 } MapasGlobales;
 
+// struct que contiene un producto y su cantidad, para usar en carritos
 typedef struct {
     Producto *producto;
     int cantidad;
@@ -99,7 +102,7 @@ int main()
     return 0;
 }
 
-// espera hasta que el usuario presione ENTER
+// espera a que el usuario presione ENTER
 void esperarEnter() 
 {
     printf("Presione ENTER para continuar\n");
@@ -162,7 +165,7 @@ void imprimirCarrito(List *carrito)
     {
         int precio = producto->cantidad * producto->producto->precio;
         total += precio;
-        printf("  %s  $%i\n", producto->producto->nombre, precio);
+        printf("  %s x%i  $%i\n", producto->producto->nombre, producto->cantidad, precio);
         producto = nextList(carrito);
     }
     printf("\nTotal = $%i\n", total);
@@ -187,7 +190,7 @@ void menuImportar(MapasGlobales *mapas)
     while(1){
         fgets(linea, 1023, fp);
         if (feof(fp)) break;
-        char *nombre = strtok(linea, ",\n");
+        char *nombre = strtok(linea, ",\n"); // separa la linea introducida por ,
         char *marca = strtok(NULL, ",\n");
         char *tipo = strtok(NULL, ",\n");
         char *stock = strtok(NULL, ",\n");
@@ -242,7 +245,7 @@ void menuAgregar(MapasGlobales *mapas)
     char *precio = strtok(NULL, ",\n");
 
     Producto *busqueda = searchMap(mapas->mapaNombre, nombre);
-    if (busqueda) // si se encontró un producto
+    if (busqueda) // si se encontró un producto, sólo se aumenta el stock
     {
         int stockInt = atoi(stock);
 
@@ -255,7 +258,7 @@ void menuAgregar(MapasGlobales *mapas)
 
     Producto *producto = crearProducto(nombre, marca, tipo, stock, precio);
 
-    insertarMapas(mapas, producto);
+    insertarMapas(mapas, producto); // se inserta el producto en los mapas de búsqueda
 
     printf("Producto añadido exitosamente.\n");
     esperarEnter();
@@ -272,11 +275,11 @@ void menuBuscarTipo(MapasGlobales *mapas)
     List *lista = searchMap(mapas->mapaTipo,linea);
     Producto *producto = firstList(lista);
 
+    // mapaTipo es un multimapa, su valor es una lista
     if(producto != NULL){
         while(producto != NULL)
         {
             mostrarProducto(producto);
-            
             producto = nextList(lista);
         }
     }
@@ -294,6 +297,7 @@ void menuBuscarMarca(MapasGlobales *mapas)
     List *lista = searchMap(mapas->mapaMarca,linea);
     Producto *producto = firstList(lista);
 
+    // mapaMarca es un multimapa, su valor es una lista
     if(producto != NULL){
         while(producto != NULL)
         {
@@ -322,7 +326,7 @@ void menuBuscarNombre(MapasGlobales *mapas)
     esperarEnter();
 }
 
-void menuMostrarProductos(MapasGlobales *mapas) //f7
+void menuMostrarProductos(MapasGlobales *mapas)
 {
     Map *mapa = mapas->mapaNombre;
     Producto *aux = firstMap(mapa);
@@ -365,6 +369,7 @@ void menuAgregarACarrito(MapasGlobales *mapas)
     
     productoCarrito->cantidad = cant;
 
+    // si no existe, crea un carrito y agrega el producto a este
     if(!busqueda){
         List *productos = createList();
         pushBack(productos, productoCarrito);
@@ -422,6 +427,7 @@ void menuComprar(MapasGlobales *mapas)
         ProductoCarrito *productoCarrito = firstList(carrito);
         while (productoCarrito)
         {
+            // si hay stock, se resta. de lo contrario, se salta el producto
             if ((productoCarrito->producto->stock - productoCarrito->cantidad) < 0)
             {
                 printf("No hay suficiente stock para %i %s, se saltará este producto\n", productoCarrito->producto->stock, 
