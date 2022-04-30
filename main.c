@@ -386,9 +386,10 @@ void menuAgregarACarrito(MapasGlobales *mapas)
 void menuEliminarCarrito(MapasGlobales *mapas)
 {
     char key[32];
+    getchar();
 
-    printf("Introduzca el nombre del carrito del cual desea eliminar un producto\n\n");
-    scanf("%99[^\n]",&key);
+    printf("Introduzca el nombre del carrito del cual desea eliminar un producto\n");
+    scanf("%99[^\n]",key);
 
     List * lista = searchMap(mapas->mapaCarritos,key);
 
@@ -400,7 +401,8 @@ void menuEliminarCarrito(MapasGlobales *mapas)
 
     ProductoCarrito * elemento = popBack(lista);
 
-    printf("El producto eliminado del carrito es: %s, %s",elemento->producto->nombre, elemento->producto->marca);
+    printf("El producto eliminado del carrito es: %s, %s\n",elemento->producto->nombre, elemento->producto->marca);
+    esperarEnter();
 }
 
 void menuComprar(MapasGlobales *mapas)
