@@ -40,6 +40,10 @@ void menuEliminarCarrito(MapasGlobales *);
 void menuComprar(MapasGlobales *);
 void menuMostrarCarritos(MapasGlobales *);
 
+void subMenuAgregar(MapasGlobales *);
+void subMenuBusqueda(MapasGlobales *);
+void subMenuCarritos(MapasGlobales *);
+
 // compara 2 keys tipo string
 int is_equal(void *key1, void *key2)
 {
@@ -69,37 +73,76 @@ int main()
     {
         printf("        |  Menu  |\nPara elegir una opción introduzca el número correspondiente:\n");
 
-        printf("  1. Importar archivo\n");
-        printf("  2. Exportar archivo\n");
-        printf("  3. Agregar producto\n");
-        printf("  4. Buscar tipo de producto\n");
-        printf("  5. Buscar productos por marca\n");
-        printf("  6. Buscar productos por nombre\n");
-        printf("  7. Mostrar todos los productos\n");
-        printf("  8. Agregar producto al carrito\n");
-        printf("  9. Eliminar carrito\n");
-        printf("  10. Concretar compra del carrito\n");
-        printf("  11. Mostrar todos los carritos\n");
+        printf("  1. Agregar productos\n");
+        printf("  2. Buscar productos\n");
+        printf("  3. Carritos\n");
         printf("  0. Salir\n");
         
         int opcion;
         scanf("%i", &opcion);
 
         if(opcion == 0) break;
-        if(opcion == 1) menuImportar(mapas);
-        if(opcion == 2) menuExportar(mapas);
-        if(opcion == 3) menuAgregar(mapas);
-        if(opcion == 4) menuBuscarTipo(mapas);
-        if(opcion == 5) menuBuscarMarca(mapas);
-        if(opcion == 6) menuBuscarNombre(mapas);
-        if(opcion == 7) menuMostrarProductos(mapas);
-        if(opcion == 8) menuAgregarACarrito(mapas);
-        if(opcion == 9) menuEliminarCarrito(mapas);
-        if(opcion == 10) menuComprar(mapas);
-        if(opcion == 11) menuMostrarCarritos(mapas);
+        if(opcion == 1) subMenuAgregar(mapas);
+        if(opcion == 2) subMenuBusqueda(mapas);
+        if(opcion == 3) subMenuCarritos(mapas);
     }
     
     return 0;
+}
+
+void subMenuAgregar(MapasGlobales *mapas)
+{
+    printf("        |  Agregar productos  |\nPara elegir una opción introduzca el número correspondiente:\n");
+    printf("  1. Importar archivo\n");
+    printf("  2. Exportar archivo\n");
+    printf("  3. Agregar un producto manualmente\n");
+    printf("  0. Volver al menú principal\n");
+
+    int opcion;
+    scanf("%i", &opcion);
+
+    if (opcion==1) menuImportar(mapas);
+    if (opcion==2) menuExportar(mapas);
+    if (opcion==3) menuAgregar(mapas);
+    if (opcion==0) return;
+}
+
+void subMenuBusqueda(MapasGlobales *mapas)
+{
+    printf("        |  Buscar Productos  |\nPara elegir una opción introduzca el número correspondiente:\n");
+    printf("  1. Buscar por nombre\n");
+    printf("  2. Buscar por marca\n");
+    printf("  3. Buscar por tipo\n");
+    printf("  4. Mostrar todos los productos\n");
+    printf("  0. Volver al menú principal\n");
+
+    int opcion;
+    scanf("%i", &opcion);
+
+    if (opcion==1) menuBuscarNombre(mapas);
+    if (opcion==2) menuBuscarMarca(mapas);
+    if (opcion==3) menuBuscarTipo(mapas);
+    if (opcion==4) menuMostrarProductos(mapas);
+    if (opcion==0) return;
+}
+
+void subMenuCarritos(MapasGlobales *mapas)
+{
+    printf("        |  Carritos  |\nPara elegir una opción introduzca el número correspondiente:\n");
+    printf("  1. Agregar producto a carrito\n");
+    printf("  2. Eliminar último producto de carrito\n");
+    printf("  3. Mostrar todos los carritos\n");
+    printf("  4. Completar compra de carrito\n");
+    printf("  0. Volver al menú principal\n");
+
+    int opcion;
+    scanf("%i", &opcion);
+
+    if (opcion==1) menuAgregar(mapas);
+    if (opcion==2) menuEliminarCarrito(mapas);
+    if (opcion==3) menuMostrarCarritos(mapas);
+    if (opcion==4) menuComprar(mapas);
+    if (opcion==0) return;
 }
 
 // espera a que el usuario presione ENTER
