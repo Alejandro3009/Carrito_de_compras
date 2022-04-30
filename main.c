@@ -157,8 +157,9 @@ void imprimirCarrito(List *carrito)
         int precio = producto->cantidad * producto->producto->precio;
         total += precio;
         printf("  %s  $%i\n", producto->producto->nombre, precio);
+        producto = nextList(carrito);
     }
-    printf("\nTotal = $%i", total);
+    printf("\nTotal = $%i\n", total);
 }
 
 void menuImportar(MapasGlobales *mapas)
@@ -333,23 +334,25 @@ void menuAgregarACarrito(MapasGlobales *mapas)
     Map *carritos = mapas->mapaCarritos;
     int flag = 0;
     char *linea[512];
-    char *nombreCarrito;
+    char nombreCarrito[32];
     int cant = 0;
 
+    getchar();
     printf("Ingrese el nombre del carrito donde se agregara el producto\n");
     scanf("%99[^\n]",&nombreCarrito);
 
+    getchar();
     printf("Ingrese el nombre del producto disponible a ingresar al carrito\n");
     scanf("%99[^\n]",&linea);
 
+    getchar();
     printf("Ingrese la cantidad del producto que se quiere agregar al carrito\n");
-    scanf("%99[^\n]",&cant);
+    scanf("%i",&cant);
 
     List *busqueda = searchMap(carritos,nombreCarrito);
 
     productoCarrito->producto = searchMap(mapas->mapaNombre,linea);
     productoCarrito->cantidad = cant;
-    pushBack(busqueda,productoCarrito);
 
     if(!busqueda){
         List *productos = createList();
@@ -360,6 +363,7 @@ void menuAgregarACarrito(MapasGlobales *mapas)
         pushBack(busqueda,productoCarrito);
     }
 
+    printf("Producto agregado exitosamente\n");
     esperarEnter();
 }
 
@@ -386,6 +390,7 @@ void menuEliminarCarrito(MapasGlobales *mapas)
 void menuComprar(MapasGlobales *mapas)
 {
     char linea[32];
+    getchar();
     printf("Escriba el nombre de su carrito: ");
     scanf("%99[^\n]", linea);
 
@@ -396,17 +401,12 @@ void menuComprar(MapasGlobales *mapas)
         printf("Productos contenidos en el carrito:\n");
         imprimirCarrito(carrito);
 
-        printf("Introduzca S para confirmar la compra, o N para volver al menú\n");
+        printf("Introduzca S para confirmar la compra, o cualquier otra cosa para volver al menú\n");
         char opcion;
-        scanf("%i", &opcion);
+        getchar();
+        scanf("%c", &opcion);
 
-        if (opcion == 'N') return;
-        while (opcion != 'S')
-        {
-            printf("Opción inválida. Introduzca nuevamente\n");
-            scanf("%i", &opcion);
-            if (opcion == 'N') return;
-        }
+        if (opcion != 'S') return;
 
         ProductoCarrito *productoCarrito = firstList(carrito);
         while (productoCarrito)
@@ -419,7 +419,9 @@ void menuComprar(MapasGlobales *mapas)
     else
     {
         printf("No se pudo encontrar el carrito especificado\n");
+        return;
     }
+    printf("Compra realizada exitosamente\n");
 }
 
 void menuMostrarCarritos(MapasGlobales *mapas)
@@ -436,10 +438,9 @@ void menuMostrarCarritos(MapasGlobales *mapas)
     ProductoCarrito * producto = firstList(carrito);
     int contador = 0;
     
-    while(aux != NULL)
+    while(carrito != NULL)
     {
-        void * key = currentKey(aux);
-        printf("nombre del carrito: %s",key);
+        printf("Nombre del carrito: %s", currentKey(aux));
 
         while(1)
         {
