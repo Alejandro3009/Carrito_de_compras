@@ -63,7 +63,7 @@ int main()
 
     while (1)
     {
-        printf("    |  Menu  |\nPara elegir una opción introduzca el número correspondiente:\n");
+        printf("        |  Menu  |\nPara elegir una opción introduzca el número correspondiente:\n");
 
         printf("  1. Importar archivo\n");
         printf("  2. Exportar archivo\n");
@@ -258,7 +258,7 @@ void menuAgregar(MapasGlobales *mapas)
 
 void menuBuscarTipo(MapasGlobales *mapas)
 {
-    printf("Por favor ingrese el tipo de producto que esta buscando");
+    printf("Introduzca el tipo de producto que desea buscar: ");
 
     char linea[512];
     getchar();
@@ -274,7 +274,7 @@ void menuBuscarTipo(MapasGlobales *mapas)
             producto = nextList(lista);
         }
     }
-    else printf("El tipo de producto que usted esta buscando no existe\n");
+    else printf("El tipo de producto que usted está buscando no existe\n");
     esperarEnter();
 }
 
@@ -302,7 +302,7 @@ void menuBuscarMarca(MapasGlobales *mapas)
 
 void menuBuscarNombre(MapasGlobales *mapas)
 {
-    printf("Introduzca el nombre del producto: ");
+    printf("Introduzca el nombre del producto que desea buscar: ");
 
     char linea[512];
     getchar();
@@ -338,15 +338,15 @@ void menuAgregarACarrito(MapasGlobales *mapas)
     int cant = 0;
 
     getchar();
-    printf("Ingrese el nombre del carrito donde se agregara el producto\n");
+    printf("Introduzca el nombre de su carrito: ");
     scanf("%99[^\n]",&nombreCarrito);
 
     getchar();
-    printf("Ingrese el nombre del producto disponible a ingresar al carrito\n");
+    printf("Introduzca el nombre del producto que desea agregar: ");
     scanf("%99[^\n]",&linea);
 
     getchar();
-    printf("Ingrese la cantidad del producto que se quiere agregar al carrito\n");
+    printf("Introduzca la cantidad del producto que desea agregar: ");
     scanf("%i",&cant);
 
     List *busqueda = searchMap(carritos,nombreCarrito);
@@ -371,7 +371,7 @@ void menuEliminarCarrito(MapasGlobales *mapas)
 {
     char key[32];
 
-    printf("ingrese el nombre del carrito del cual quiere eliminar un producto\n\n");
+    printf("Introduzca el nombre del carrito del cual desea eliminar un producto\n\n");
     scanf("%99[^\n]",&key);
 
     List * lista = searchMap(mapas->mapaCarritos,key);
@@ -383,7 +383,7 @@ void menuEliminarCarrito(MapasGlobales *mapas)
     }
 
     ProductoCarrito * elemento = popBack(lista);
-    printf("");
+
     printf("El producto eliminado del carrito es: %s, %s",elemento->producto->nombre, elemento->producto->marca);
 }
 
@@ -391,7 +391,7 @@ void menuComprar(MapasGlobales *mapas)
 {
     char linea[32];
     getchar();
-    printf("Escriba el nombre de su carrito: ");
+    printf("Introduzca el nombre de su carrito: ");
     scanf("%99[^\n]", linea);
 
     List *carrito = searchMap(mapas->mapaCarritos, linea);
@@ -445,8 +445,9 @@ void menuMostrarCarritos(MapasGlobales *mapas)
         while(1)
         {
             if(producto == NULL){
-                printf("cantidad de productos en el carrito: %i", contador);
+                printf("Cantidad de productos en el carrito: %i", contador);
                 carrito = nextMap(aux);
+                contador = 0;
                 break;
             }
             else{
