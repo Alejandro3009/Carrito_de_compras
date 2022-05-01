@@ -507,7 +507,8 @@ void menuMostrarCarritos(MapasGlobales *mapas)
     {
         int contador = 0;
         ProductoCarrito * producto = firstList(listaCarrito);
-        printf("Nombre del carrito: %s\n", currentKey(mapaCarritos));
+        printf("Nombre del carrito: %s\n", currentKey(mapaCarritos));/*Imprimimos el key del mapa, ya que es igual
+                                                                       al nombre del carrito */
 
         while(1)
         {
