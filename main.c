@@ -287,6 +287,13 @@ void menuAgregar(MapasGlobales *mapas)
     char *stock = strtok(NULL, ",\n");
     char *precio = strtok(NULL, ",\n");
 
+    if (!precio)
+    {
+        printf("Producto inválido\n");
+        esperarEnter();
+        return;
+    }
+
     Producto *busqueda = searchMap(mapas->mapaNombre, nombre);
     if (busqueda) // si se encontró un producto, sólo se aumenta el stock
     {
